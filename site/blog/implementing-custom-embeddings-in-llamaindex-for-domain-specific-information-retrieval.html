@@ -1,0 +1,1166 @@
+<!DOCTYPE html><!-- This site was created in Webflow. https://webflow.com --><!-- Last Published: Wed Oct 21 2026 11:40:36 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain="www.coditation.com" data-wf-page="6a02ddb738d8e2b6e8ff7b4e" data-wf-site="69e5ad295c1d96ac846056f7" lang="en" data-wf-collection="6a02ddb638d8e2b6e8ff7b08" data-wf-item-slug="implementing-custom-embeddings-in-llamaindex-for-domain-specific-information-retrieval"><head><meta charset="utf-8"/><link href="https://cdn.prod.website-files.com" rel="preconnect" crossorigin="anonymous"/><title>Implementing custom embeddings in LlamaIndex for domain-specific information retrieval</title><meta content="Discover how to dramatically improve search relevance in specialized domains by implementing custom embeddings in LlamaIndex. This comprehensive guide walks through four practical approaches—from fine-tuning existing models to creating knowledge-enhanced embeddings—with real-world code examples. Learn how domain-specific embeddings can boost precision by 30-45% compared to general-purpose models, as demonstrated in a legal tech case study where search precision jumped from 67% to 89%." name="description"/><meta content="Implementing custom embeddings in LlamaIndex for domain-specific information retrieval" property="og:title"/><meta content="Discover how to dramatically improve search relevance in specialized domains by implementing custom embeddings in LlamaIndex. This comprehensive guide walks through four practical approaches—from fine-tuning existing models to creating knowledge-enhanced embeddings—with real-world code examples. Learn how domain-specific embeddings can boost precision by 30-45% compared to general-purpose models, as demonstrated in a legal tech case study where search precision jumped from 67% to 89%." property="og:description"/><meta content="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a916c2aa5cf364c114d5_implementing-custom-embeddings-in-llamaindex-for-domain-specific-information-retrieval.avif" property="og:image"/><meta content="Implementing custom embeddings in LlamaIndex for domain-specific information retrieval" name="twitter:title"/><meta content="Discover how to dramatically improve search relevance in specialized domains by implementing custom embeddings in LlamaIndex. This comprehensive guide walks through four practical approaches—from fine-tuning existing models to creating knowledge-enhanced embeddings—with real-world code examples. Learn how domain-specific embeddings can boost precision by 30-45% compared to general-purpose models, as demonstrated in a legal tech case study where search precision jumped from 67% to 89%." name="twitter:description"/><meta content="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a916c2aa5cf364c114d5_implementing-custom-embeddings-in-llamaindex-for-domain-specific-information-retrieval.avif" name="twitter:image"/><meta property="og:type" content="website"/><meta content="summary_large_image" name="twitter:card"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="google-site-verification=jpjtMdhG-qTDK7aexC4aoo0LHWaHMmy8hT9TASrBzzA" name="google-site-verification"/><meta content="Webflow" name="generator"/><link href="../assets/asset-001.css" rel="stylesheet" type="text/css" integrity="sha384-ic8jXNYyzNvWMWMi6Nca6QUB4q5QtVOy8PwQXg4CnR9J0w4HEWnDS7+nVJWDR8CO" crossorigin="anonymous"/><link href="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/css/dev-coditation.webflow.6a02ddb738d8e2b6e8ff7b4e.84492e9e3.opt.min.css" rel="stylesheet" type="text/css" integrity="sha384-hEkunj3sUvulF7rtLpJrdXF1GwSc29dp3kcJWOW8hNtYWg1Ddkx7m0BUFHZnDTex" crossorigin="anonymous"/><script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script><link href="../assets/asset-003.png" rel="icon" type="image/png" sizes="32x32" media="(prefers-color-scheme: light)"/><link href="../assets/asset-003.png" rel="icon" type="image/png" sizes="32x32" media="(prefers-color-scheme: dark)"/><link href="../assets/asset-004.png" rel="icon" type="image/png" sizes="48x48"/><link href="../assets/asset-005.png" rel="apple-touch-icon" sizes="180x180"/><link href="../assets/asset-006.png" rel="icon" type="image/png" sizes="192x192"/><link href="../assets/asset-007.png" rel="icon" type="image/png" sizes="512x512"/><link href="https://www.coditation.com/blog/implementing-custom-embeddings-in-llamaindex-for-domain-specific-information-retrieval" rel="canonical"/><script>(function(w,i,g){w[g]=w[g]||[];if(typeof w[g].push=='function')w[g].push.apply(w[g],Array.isArray(i)?i:[i]);})(window,['G-VDY5FXGKKX'],'google_tags_first_party');</script><script async="" src="../assets/asset-008.js"></script><script type="text/javascript">window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('set', 'developer_id.dZGVlNj', true);gtag('set', 'developer_id.dYWYxNW', true);gtag('js', new Date());gtag('config', 'G-VDY5FXGKKX');</script><script src="../assets/asset-009.js" type="text/javascript"></script><script src="../assets/asset-010.js"></script>
+
+<meta name="google-site-verification" content="o2AfcNsnyb_YRPO2dKf5JIR3APJSrKjjKhbtHUShsIE" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5882L9N');</script>
+<!-- End Google Tag Manager -->
+<script src="../assets/asset-011.js" data-key="n7+dhZSiZTcRE5A7Mmop0g" async></script>
+<style>
+.ec-holder {
+    background: #FFFFFF !important;
+  font-size: 16px;
+    color: #060910 !important;
+    border: 1px solid rgba(0,0,0,0.08) !important;
+    border-radius: 4px !important;
+
+    backdrop-filter: blur(20px) !important;
+    padding: 1.5rem !important;
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+
+.ec-holder * {
+    color: #060910 !important;
+}
+
+
+.ec-holder button {
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+}
+
+#ecSubmitButton {
+    background: #3064FE !important;
+    padding: 8px 7px!important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 4px !important;
+    font-weight: 600 !important;
+}
+#ecShowMore{
+  
+    background: transparent !important;
+    color: #060910 !important;
+    padding: 8px 7px;
+    border: 1px solid rgba(0,0,0,0.12) !important;
+    border-radius: 4px !important;
+}
+
+
+
+<style>
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -o-font-smoothing: antialiased;
+  }
+
+  /* Combined Truncation Classes */
+  .truncate-2-lines,
+  .card-heading {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+ 
+
+ 
+
+  img, video, canvas {
+    overflow: clip; /* or overflow: hidden; */
+  }
+
+<link rel="preload">
+</style>
+
+<script defer src="../assets/asset-012.js"></script>
+<script defer src="../assets/asset-013.js"></script>
+
+
+
+
+<style>
+  .truncate-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+  .truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>
+<!-- Finsweet Attributes -->
+<script async type="module"
+src="https://cdn.jsdelivr.net/npm/@finsweet/attributes@2/attributes.js"
+fs-toc
+></script><script type="text/javascript">window.__WEBFLOW_CURRENCY_SETTINGS = {"currencyCode":"USD","symbol":"$","decimal":".","fractionDigits":2,"group":",","template":"{{wf {\"path\":\"symbol\",\"type\":\"PlainText\"} }} {{wf {\"path\":\"amount\",\"type\":\"CommercePrice\"} }} {{wf {\"path\":\"currencyCode\",\"type\":\"PlainText\"} }}","hideDecimalForWholeNumbers":false};</script></head><body><div class="page-wrapper"><div data-animation="default" class="navbar-wrapper w-nav" data-wf--navbar--variant="base" data-easing2="ease" data-easing="ease" data-collapse="medium" data-w-id="d8456cdd-8393-b586-48ab-c0955c7e989e" role="banner" data-duration="400"><div role="region" aria-label="Announcement" class="cd-announcement-bar"><div class="text-block-3"><strong>Meet Coditation at IAM 2026</strong> | Oct 21–24 · San Diego · <strong>Booth 703 ·</strong> <br/></div><a href="../events/iam-2026-meet-coditation.html" class="button tertiary-2 small w-inline-block"><div>Join us!</div><div class="button_arrow_wrapper tertiary-3"><img src="../assets/asset-016.svg" loading="eager" alt="" class="button_arrow tertiary-4"/><img src="../assets/asset-017.svg" loading="lazy" alt="" class="button_arrow tertiary-4 light-mode tertiary-5"/><img src="../assets/asset-018.svg" loading="lazy" alt="" class="button_arrow tertiary-4 dark-mode tertiary-6"/></div></a></div><div class="navbar"><div class="nabar_padding"><a href="../index.html" aria-label="Coditation - Home" class="nav-logo-wp w-inline-block"><img loading="eager" src="../assets/asset-019.svg" alt="coditation logo" class="nav-logo"/></a><nav role="navigation" class="nav-menu w-nav-menu"><div class="navbar-link-wp"><div data-delay="0" data-hover="true" class="dp-navbar-link w-dropdown"><div aria-controls="w-dropdown-list" class="nav-dp-toggle w-dropdown-toggle"><div>Industries</div><div class="nav-arrow-wp"><img loading="lazy" src="../assets/asset-020.svg" alt="" class="image-100 nav-close_state"/><img loading="lazy" src="../assets/asset-021.svg" alt="" class="image-100 nav-open_state"/></div></div><nav class="dp-mega-menu w-dropdown-list"><div class="padding-global nav"><div class="container-large"><div class="nav_megamenu"><div class="nav-2-dd-features-sublinks-wp"><a href="../industries/healthcare-life-sciences.html" aria-label="Healthcare and Life Science" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20" fill="currentColor"><path d="M6.5 11H4V8H6.5V5.5H9.5V8H12V11H9.5V13.5H6.5V11ZM8 0L0 3V9.09C0 14.14 3.41 18.85 8 20C12.59 18.85 16 14.14 16 9.09V3L8 0Z" stroke-linejoin="round"></path></svg><div class="paragraph-2">Healthcare &amp; Life Science</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Real-time data to improve care and compliance</div></div></div></a><a href="../industries/logistics.html" aria-label="Logistics" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 8H17V4H1V17H3C3 18.66 4.34 20 6 20C7.66 20 9 18.66 9 17H15C15 18.66 16.34 20 18 20C19.66 20 21 18.66 21 17H23V12L20 8ZM6 18C5.45 18 5 17.55 5 17C5 16.45 5.45 16 6 16C6.55 16 7 16.45 7 17C7 17.55 6.55 18 6 18ZM19.5 9.5L21.46 12H17V9.5H19.5ZM18 18C17.45 18 17 17.55 17 17C17 16.45 17.45 16 18 16C18.55 16 19 16.45 19 17C19 17.55 18.55 18 18 18Z" clip-path="url(#clip0_6363_5958)"></path></svg><div class="paragraph-2">Logistics</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">End-to-end visibility across fleets, assets, and operations</div></div></div></a><a href="../industries/hi-tech.html" aria-label="HighTech" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" clip-path=""><path d="M15 9H9V15H15V9ZM13 13H11V11H13V13ZM21 11V9H19V5H15V3H13V5H11V3H9V5H5V9H3V11H5V13H3V15H5V19H9V21H11V19H13V21H15V19H19V15H21V13H19V11H21ZM17 17H7V7H17V17Z" stroke-linejoin="round"></path></svg><div class="paragraph-2">HighTech</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Scalable platforms for connected products and systems</div></div></div></a><a href="../industries/fintech.html" aria-label="Fintech" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" clip-path="url(#clip0_6363_5977)"><path d="M4 10V17H7V10H4ZM10 10V17H13V10H10ZM2 22H21V19H2V22ZM16 10V17H19V10H16ZM11.5 1L2 6V8H21V6L11.5 1Z" stroke-linejoin="round"></path></svg><div class="paragraph-2">Fintech</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Secure, compliant systems for modern financial operations</div></div></div></a><a href="../industries/digital-commerce.html" aria-label="Digital Commerce" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" clip-path="url(#clip0_6363_5986)"><path d="M17 18C15.9 18 15.01 18.9 15.01 20C15.01 21.1 15.9 22 17 22C18.1 22 19 21.1 19 20C19 18.9 18.1 18 17 18ZM7 18C5.9 18 5.01 18.9 5.01 20C5.01 21.1 5.9 22 7 22C8.1 22 9 21.1 9 20C9 18.9 8.1 18 7 18ZM7 15L8.1 13H15.55C16.3 13 16.96 12.59 17.3 11.97L21.7 4H5.21L4.27 2H1V4H3L6.6 11.59L3.62 17H19V15H7Z" stroke-linejoin="round"></path></svg><div class="paragraph-2">Digital Commerce</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Seamless, scalable experiences across digital storefronts</div></div></div></a><a href="../industries/energy-and-industrials.html" aria-label="Energy and Industrials" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M11.0002 21H10.0002L11.0002 14H6.74023C6.74023 14 10.4202 7.54 13.0002 3H14.0002L13.0002 10H17.2802L11.0002 21Z" stroke-linejoin="round"></path></svg><div class="paragraph-2">Energy &amp; Industrials</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Intelligent monitoring and control for critical infrastructure</div></div></div></a></div><div class="featured-wp"><div class="div-block-249"><div class="paragraph-2">Gen AI: Playbook</div><div class="nav_btn_ter_wp"><a data-wf--button-with-arrow--variant="tertiary" href="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a5909c93e6f1ce2b8949003_Gen_ai_playbook_medium_quality.pdf" target="_blank" class="button w-variant-048a5caf-c188-5d8b-afbb-1aa26db7211c w-inline-block"><div>Download</div><div class="button_arrow_wrapper"><img src="../assets/asset-016.svg" loading="eager" alt="" class="button_arrow"/><img src="../assets/asset-017.svg" loading="lazy" alt="" class="button_arrow light-mode"/><img src="../assets/asset-018.svg" loading="lazy" alt="" class="button_arrow dark-mode"/></div></a></div></div><div class="gen_ai_play_book_wrapper nav"><img src="../assets/asset-022.avif" loading="lazy" sizes="100vw" srcset="../assets/asset-023.avif 500w, ../assets/asset-024.avif 800w, ../assets/asset-025.avif 1080w, ../assets/asset-022.avif 1180w" alt="Generative AI playbook" class="gen_ai_playbook_1 box-shadow"/><img src="../assets/asset-022.avif" loading="lazy" sizes="100vw" srcset="../assets/asset-023.avif 500w, ../assets/asset-024.avif 800w, ../assets/asset-025.avif 1080w, ../assets/asset-022.avif 1180w" alt="Generative AI playbook" class="gen_ai_playbook_2 box-shadow"/></div><div class="space-24"></div></div><div class="bg-nav"></div></div></div></div></nav></div><a href="../case-studies.html" aria-label="Blogs" class="nav-dp-toggle w-inline-block"><div>Case Studies</div></a><div data-delay="0" data-hover="true" class="dp-navbar-link w-dropdown"><div class="nav-dp-toggle w-dropdown-toggle"><div>Capabilities</div><div class="nav-arrow-wp"><img loading="lazy" src="../assets/asset-020.svg" alt="" class="image-100 nav-close_state"/><img loading="lazy" src="../assets/asset-021.svg" alt="" class="image-100 nav-open_state"/></div></div><nav class="dp-mega-menu w-dropdown-list"><div class="padding-global nav"><div class="container-large"><div class="nav_megamenu"><div class="nav-2-dd-features-sublinks-wp"><a href="../capability/ai-machine-learning.html" aria-label="AI and Machine Learning" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><div class="nav-link_icon_wrapper"><img width="Auto" loading="lazy" alt="AI capability" src="../assets/asset-026.svg" class="image-100"/></div><div class="paragraph-2">AI &amp; Machine Learning</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">AI for better business outcomes.</div></div></div></a><a href="../capability/data-engineering.html" aria-label="Data Engineering" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><div class="nav-link_icon_wrapper"><img width="Auto" loading="lazy" alt="account tree icon" src="../assets/asset-027.svg" class="image-100"/></div><div class="paragraph-2">Data Engineering</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Build data foundations for scale.</div></div></div></a><a href="../capability/managed-devops-sre-application-support.html" aria-label="Managed DevOps, SRE &amp; Application Support" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><div class="nav-link_icon_wrapper"><img width="Auto" loading="lazy" alt="settings suggest icon" src="../assets/asset-028.svg" class="image-100"/></div><div class="paragraph-2">Managed DevOps, SRE &amp; Application Support</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Performance, reliability, and operational resilience.</div></div></div></a><a href="../capability/application-maintenance-modernization.html" aria-label="Application Maintenance &amp; Modernization" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><div class="nav-link_icon_wrapper"><img width="Auto" loading="lazy" alt="autorenew icon" src="../assets/asset-029.svg" class="image-100"/></div><div class="paragraph-2">Application Maintenance &amp; Modernization</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Keep systems current and future-ready.</div></div></div></a></div><div class="featured-wp"><div class="div-block-249"><div class="paragraph-2">Gen AI: Playbook</div><div class="nav_btn_ter_wp"><a data-wf--button-with-arrow--variant="tertiary" href="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a5909c93e6f1ce2b8949003_Gen_ai_playbook_medium_quality.pdf" target="_blank" class="button w-variant-048a5caf-c188-5d8b-afbb-1aa26db7211c w-inline-block"><div>Download</div><div class="button_arrow_wrapper"><img src="../assets/asset-016.svg" loading="eager" alt="" class="button_arrow"/><img src="../assets/asset-017.svg" loading="lazy" alt="" class="button_arrow light-mode"/><img src="../assets/asset-018.svg" loading="lazy" alt="" class="button_arrow dark-mode"/></div></a></div></div><div class="gen_ai_play_book_wrapper nav"><img src="../assets/asset-022.avif" loading="lazy" sizes="100vw" srcset="../assets/asset-023.avif 500w, ../assets/asset-024.avif 800w, ../assets/asset-025.avif 1080w, ../assets/asset-022.avif 1180w" alt="Generative AI playbook" class="gen_ai_playbook_1 box-shadow"/><img src="../assets/asset-022.avif" loading="lazy" sizes="100vw" srcset="../assets/asset-023.avif 500w, ../assets/asset-024.avif 800w, ../assets/asset-025.avif 1080w, ../assets/asset-022.avif 1180w" alt="Generative AI playbook" class="gen_ai_playbook_2 box-shadow"/></div><div class="space-24"></div></div><div class="bg-nav"></div></div></div></div></nav></div><div data-delay="0" data-hover="true" class="dp-navbar-link w-dropdown"><div class="nav-dp-toggle w-dropdown-toggle"><div>Company</div><div class="nav-arrow-wp"><img loading="lazy" src="../assets/asset-020.svg" alt="" class="image-100 nav-close_state"/><img loading="lazy" src="../assets/asset-021.svg" alt="" class="image-100 nav-open_state"/></div></div><nav class="dp-mega-menu w-dropdown-list"><div class="padding-global nav"><div class="container-large"><div class="nav_megamenu"><div class="nav-2-dd-features-sublinks-wp"><a href="../about.html" aria-label="AI and Machine Learning" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><div class="nav-link_icon_wrapper"><img width="Auto" loading="lazy" alt="groups icon" src="../assets/asset-030.svg" class="image-100"/></div><div class="paragraph-2">About</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Where innovation, integrity, and product thinking meet.</div></div></div></a><a href="../careers.html" aria-label="Data Engineering" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><div class="nav-link_icon_wrapper"><img width="Auto" loading="lazy" alt="badge icon" src="../assets/asset-031.svg" class="image-100"/></div><div class="paragraph-2">Careers</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Grow your career with cutting edge technology projects.</div></div></div></a></div><div class="featured-wp"><div class="div-block-249"><div class="paragraph-2">Gen AI: Playbook</div><div class="nav_btn_ter_wp"><a data-wf--button-with-arrow--variant="tertiary" href="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a5909c93e6f1ce2b8949003_Gen_ai_playbook_medium_quality.pdf" target="_blank" class="button w-variant-048a5caf-c188-5d8b-afbb-1aa26db7211c w-inline-block"><div>Download</div><div class="button_arrow_wrapper"><img src="../assets/asset-016.svg" loading="eager" alt="" class="button_arrow"/><img src="../assets/asset-017.svg" loading="lazy" alt="" class="button_arrow light-mode"/><img src="../assets/asset-018.svg" loading="lazy" alt="" class="button_arrow dark-mode"/></div></a></div></div><div class="gen_ai_play_book_wrapper nav"><img src="../assets/asset-022.avif" loading="lazy" sizes="100vw" srcset="../assets/asset-023.avif 500w, ../assets/asset-024.avif 800w, ../assets/asset-025.avif 1080w, ../assets/asset-022.avif 1180w" alt="Generative AI playbook" class="gen_ai_playbook_1 box-shadow"/><img src="../assets/asset-022.avif" loading="lazy" sizes="100vw" srcset="../assets/asset-023.avif 500w, ../assets/asset-024.avif 800w, ../assets/asset-025.avif 1080w, ../assets/asset-022.avif 1180w" alt="Generative AI playbook" class="gen_ai_playbook_2 box-shadow"/></div><div class="space-24"></div></div><div class="bg-nav"></div></div></div></div></nav></div><a href="../resources/blogs.html" aria-label="Blogs" class="nav-dp-toggle w-inline-block"><div>Blogs</div></a><a href="../ai-lab.html" aria-label="Blogs" class="nav-dp-toggle nav_ai_lab_btn w-inline-block"><div class="button_arrow_wrapper"><img src="../assets/asset-032.svg" loading="eager" alt="" class="button_arrow"/></div><div>AI Lab</div><img src="../assets/asset-033.svg" loading="lazy" alt="" class="ai_btn_particals"/><img src="../assets/asset-034.svg" loading="lazy" alt="" class="ai_btn_border"/></a><div class="nav_btn"><a data-wf--button-with-arrow--variant="navbar" href="../contact.html" class="button w-variant-4a9d35e3-62df-3ed2-5d5b-7b8d0c01e64c w-inline-block"><div>Get In Touch</div><div class="button_arrow_wrapper"><img src="../assets/asset-016.svg" loading="eager" alt="" class="button_arrow"/><img src="../assets/asset-017.svg" loading="lazy" alt="" class="button_arrow light-mode"/><img src="../assets/asset-018.svg" loading="lazy" alt="" class="button_arrow dark-mode"/></div></a></div></div></nav><div class="nav-btn-main-wp"><a aria-label="Contact Coditation" data-wf--button-with-arrow--variant="navbar" href="../contact.html" class="button w-variant-4a9d35e3-62df-3ed2-5d5b-7b8d0c01e64c w-inline-block"><div>Get In Touch</div><div class="button_arrow_wrapper"><img src="../assets/asset-016.svg" loading="eager" alt="" class="button_arrow"/><img src="../assets/asset-017.svg" loading="lazy" alt="" class="button_arrow light-mode"/><img src="../assets/asset-018.svg" loading="lazy" alt="" class="button_arrow dark-mode"/></div></a></div><div class="menu-button w-nav-button"><div class="ham_wrapper"><div class="ham_line1"></div><div class="ham_line2"></div><div class="ham_line3"></div></div></div></div></div><div class="code-block w-embed w-script"><style>
+/* Locks the body from scrolling when any dropdown is open */
+body.no-scroll {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // Use querySelectorAll to find BOTH dropdown toggles
+  const dropdownToggles = document.querySelectorAll(".nav-dp-toggle");
+
+  if (dropdownToggles.length > 0) {
+    
+    // Create the observer instance
+    const observer = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        if (mutation.attributeName === "class") {
+          
+          // Loop through all toggles to see if ANY of them are open right now
+          let isAnyOpen = false;
+          dropdownToggles.forEach(function (toggle) {
+            if (toggle.classList.contains("w--open")) {
+              isAnyOpen = true;
+            }
+          });
+
+          // Apply or remove the scroll lock class based on the global state
+          if (isAnyOpen) {
+            document.body.classList.add("no-scroll");
+          } else {
+            document.body.classList.remove("no-scroll");
+          }
+        }
+      });
+    });
+
+    // CRITICAL: Loop through each toggle and attach the observer to both
+    dropdownToggles.forEach(function (toggle) {
+      observer.observe(toggle, { attributes: true });
+    });
+  }
+});
+</script></div><div class="nav_background_overlay"></div></div><div class="main-wrapper"><div class="section-wrapper"><section class="section"><div class="padding-global padding-section-medium hero_section"><div class="blogs_hero_wrapper"><h1>Implementing custom embeddings in LlamaIndex for domain-specific information retrieval</h1><div class="space-12"></div><p class="paragraph-3 max-width-large">Discover how to dramatically improve search relevance in specialized domains by implementing custom embeddings in LlamaIndex. This comprehensive guide walks through four practical approaches—from fine-tuning existing models to creating knowledge-enhanced embeddings—with real-world code examples. Learn how domain-specific embeddings can boost precision by 30-45% compared to general-purpose models, as demonstrated in a legal tech case study where search precision jumped from 67% to 89%.</p></div></div><div class="background-wrapper"><img src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a058f82c005f272b5a7e9c7_blog%20hero%20bg.svg" loading="lazy" alt="" class="image-100"/></div></section></div><section class="section white-bg"><div class="padding-global padding-section-medium"><div class="highlight-content-wp"><div class="more-articles-wp"><div class="table-of-contents-wp"><div class="paragraph-3 text-weight-semibold">IN THIS ARTICLE</div><div class="space-24"></div><div class="toc-link-wp"><a href="implementing-custom-embeddings-in-llamaindex-for-domain-specific-information-retrieval.html" class="fs-toc-link w-inline-block"><div fs-toc-element="link">This is some text inside of a div block.</div></a></div></div><div class="share-link"><div class="paragraph-2 text-weight-semibold">Share</div><div class="share-social-icons"><a aria-label="Share on LinkedIn" href="implementing-custom-embeddings-in-llamaindex-for-domain-specific-information-retrieval.html" class="social-share-btn lnk w-inline-block"></a><a href="implementing-custom-embeddings-in-llamaindex-for-domain-specific-information-retrieval.html" class="social-share-btn twitter w-inline-block"></a></div><div class="share_block"><div class="html-embed w-embed"><a
+  class="w-inline-block social-share-btn lnk"
+  href="http://www.linkedin.com/shareArticle?mini=true&url=&title=&summary=&source="
+  target="_blank"
+  title="Share on LinkedIn"
+  onclick="
+    window.open('http://www.linkedin.com/shareArticle?mini=true&url=' + encodeURIComponent(document.URL) + '&title=' + encodeURIComponent(document.title));
+    return false;
+  "
+></a></div><div aria-label="share on tweeter" class="html-embed center w-embed"><a
+  class="w-inline-block social-share-btn twitter"
+  href="http://www.linkedin.com/shareArticle?mini=true&url=&title=&summary=&source="
+   href="https://x.com/intent/tweet?url=&text=" 
+   target="_blank" 
+   title="Share on X" 
+   onclick="window.open('https://x.com/intent/tweet?url=' + encodeURIComponent(document.URL) + '&text=' + encodeURIComponent(document.title)); return false;">
+</a></div><a id="copy-article-wp" aria-label="copy link" href="implementing-custom-embeddings-in-llamaindex-for-domain-specific-information-retrieval.html" class="copy-url w-inline-block"><img src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a5899f1cb1fce3404093de6_share.svg" loading="lazy" alt="share Icon" class="image-100"/></a></div></div></div><div class="blog_content_wrapper"><div fs-toc-element="contents" class="blog_rt w-richtext"><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span># Implementing Custom Embeddings </span><span style="color:#dcc6e0">in</span><span> LlamaIndex </span><span style="color:#dcc6e0">for</span><span> Domain-Specific Information Retrieval</span></span></code></pre><p>‍</p><p>When building specialized search systems, generic embedding models often fall short. Domain-specific information retrieval demands tailored approaches that understand the unique vocabulary, concepts, and relationships within specialized fields like healthcare, legal, or technical documentation.</p><p>After implementing custom embedding solutions for several Fortune 500 companies, I&#x27;ve seen firsthand how domain-specific embeddings can dramatically improve search relevance metrics—often boosting precision by 30-45% compared to general-purpose models.</p><p>‍</p><p>This article walks through the complete process of implementing custom embeddings in LlamaIndex, providing practical code examples and performance insights based on real-world implementations.</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span>## Understanding Embeddings </span><span style="color:#dcc6e0">in</span><span> Information Retrieval
+</span></span><span></span></code></pre><p>‍</p><p>Embeddings transform text into dense vector representations, capturing semantic meaning in a way that machines can process. When we search for information, these vectors help identify conceptually similar content even when exact keywords don&#x27;t match.</p><p>‍</p><p>The challenge? General embedding models like OpenAI&#x27;s `text-embedding-ada-002` or even newer models like `text-embedding-3-small` are trained on broad internet data. They perform admirably across general topics but often miss nuances in specialized domains.</p><p>‍</p><p>Consider a medical search system: a general model might not understand that &quot;myocardial infarction&quot; and &quot;heart attack&quot; are synonymous, or that &quot;administration of epinephrine&quot; has specific clinical implications different from everyday uses of adrenaline.<br/></p><p>This interface provides the foundation for implementing any embedding model in LlamaIndex. The key methods are <code>_get_query_embedding</code> and <code>_get_text_embedding</code>, which transform queries and documents into vector representations.</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span>## Why Custom Embeddings Matter</span></span></code></pre><p>‍</p><p>Custom embeddings offer several advantages for domain-specific retrieval:</p><p>1. **Vocabulary precision**: They understand specialized terminology and jargon</p><p><br/>2. **Conceptual relationships**: They capture domain-specific associations between concepts</p><p><br/>3. **Reduced dimensionality**: They can focus on dimensions that matter for your domain</p><p>‍</p><p>4. **Improved retrieval metrics**: They typically deliver higher precision and recall</p><p>‍</p><p>In a recent legal tech project, switching from general embeddings to domain-tuned embeddings improved search precision from 67% to 89% when retrieving relevant case law and statutes.</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span>## LlamaIndex and the Embedding Interface
+</span></span><span></span></code></pre><p>‍</p><p>LlamaIndex has become a popular framework for building RAG (Retrieval Augmented Generation) applications. It provides a flexible architecture for working with different embedding models through its embedding interface.</p><p>‍</p><p>At its core, LlamaIndex expects embedding models to transform text into vector representations. The framework then uses these vectors for indexing and retrieval operations.</p><p>‍</p><p>Let&#x27;s start by examining how LlamaIndex structures its embedding interface:</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span style="color:#abe338"><span>
+</span></span><span style="color:#abe338"><span></span><span style="color:#abe338">``</span><span style="color:#abe338">`python
+</span></span><span style="color:#abe338">from llama_index.embeddings.base import BaseEmbedding
+</span><span style="color:#abe338">from typing import List, Optional
+</span><span style="color:#abe338">
+</span><span style="color:#abe338">class CustomEmbedding(BaseEmbedding):
+</span><span style="color:#abe338">   def __init__(self, model_name: str, **kwargs):
+</span><span style="color:#abe338">       super().__init__(model_name=model_name, **kwargs)
+</span><span style="color:#abe338">       # Initialize your custom embedding model here
+</span><span style="color:#abe338">
+</span><span style="color:#abe338">   def _get_query_embedding(self, query: str) -&gt; List[float]:
+</span><span style="color:#abe338">       # Implement query embedding logic
+</span><span style="color:#abe338">       pass
+</span><span style="color:#abe338">
+</span><span style="color:#abe338">   def _get_text_embedding(self, text: str) -&gt; List[float]:
+</span><span style="color:#abe338">       # Implement text embedding logic
+</span><span style="color:#abe338">       pass
+</span><span style="color:#abe338">
+</span><span style="color:#abe338">   async def _aget_query_embedding(self, query: str) -&gt; List[float]:
+</span><span style="color:#abe338">       # Async implementation (optional)
+</span><span style="color:#abe338">       pass
+</span><span style="color:#abe338">
+</span><span style="color:#abe338">   async def _aget_text_embedding(self, text: str) -&gt; List[float]:
+</span><span style="color:#abe338">       # Async implementation (optional)
+</span><span style="color:#abe338">       pass
+</span><span style="color:#abe338">
+</span><span style="color:#abe338">   def _get_text_embeddings(self, texts: List[str]) -&gt; List[List[float]]:
+</span><span style="color:#abe338">       # Batch implementation (for efficiency)
+</span><span style="color:#abe338">       return [self._get_text_embedding(text) for text in texts]
+</span><span style="color:#abe338">
+</span><span style="color:#abe338"></span></code></pre><p>‍</p><h2>Approaches to Custom Embeddings</h2><p>There are several ways to create custom embeddings for domain-specific retrieval:</p><ol role="list"><li><strong>Fine-tuning existing models</strong>: Start with a pre-trained model and fine-tune it on domain-specific data</li><li><strong>Training from scratch</strong>: Build a domain-specific embedding model from the ground up</li><li><strong>Adapter-based approaches</strong>: Add domain-specific adapters to existing models</li><li><strong>Hybrid approaches</strong>: Combine multiple embedding models or enhance embeddings with domain knowledge</li></ol><p>Let&#x27;s explore each approach with practical implementations.</p><h2>Approach 1: Fine-tuning Sentence Transformers</h2><p><a href="https://www.sbert.net/" target="_blank">Sentence Transformers</a> provides an excellent framework for creating and fine-tuning embedding models. We&#x27;ll implement a custom LlamaIndex embedding class that uses a fine-tuned Sentence Transformer model.</p><p>First, let&#x27;s set up the fine-tuning process:</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span style="color:#dcc6e0">from</span><span> sentence_transformers </span><span style="color:#dcc6e0">import</span><span> SentenceTransformer, InputExample, losses
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> torch.utils.data </span><span style="color:#dcc6e0">import</span><span> DataLoader
+</span></span><span><span></span><span style="color:#dcc6e0">import</span><span> torch
+</span></span><span>
+</span><span># Prepare your domain-specific training data
+</span><span>train_examples = [
+</span><span><span>   InputExample(texts=[</span><span style="color:#abe338">&quot;patient presents with chest pain&quot;</span><span>, </span><span style="color:#abe338">&quot;chest pain observed in patient&quot;</span><span>], label=</span><span style="color:#f5ab35">1.0</span><span>),
+</span></span><span><span>   InputExample(texts=[</span><span style="color:#abe338">&quot;myocardial infarction&quot;</span><span>, </span><span style="color:#abe338">&quot;heart attack&quot;</span><span>], label=</span><span style="color:#f5ab35">1.0</span><span>),
+</span></span><span><span>   InputExample(texts=[</span><span style="color:#abe338">&quot;administered 0.3mg epinephrine&quot;</span><span>, </span><span style="color:#abe338">&quot;gave 0.3mg of adrenaline&quot;</span><span>], label=</span><span style="color:#f5ab35">1.0</span><span>),
+</span></span><span>   # Add more domain-specific pairs...
+</span><span><span>   InputExample(texts=[</span><span style="color:#abe338">&quot;patient history&quot;</span><span>, </span><span style="color:#abe338">&quot;stock market trends&quot;</span><span>], label=</span><span style="color:#f5ab35">0.0</span><span>),
+</span></span><span>]
+</span><span>
+</span><span><span># Start </span><span style="color:#dcc6e0">with</span><span> a base model
+</span></span><span><span>base_model = SentenceTransformer(</span><span style="color:#abe338">&#x27;all-MiniLM-L6-v2&#x27;</span><span>)
+</span></span><span>
+</span><span># Create a DataLoader
+</span><span><span>train_dataloader = DataLoader(train_examples, shuffle=True, batch_size=</span><span style="color:#f5ab35">16</span><span>)
+</span></span><span>
+</span><span># Use the contrastive loss
+</span><span>train_loss = losses.CosineSimilarityLoss(base_model)
+</span><span>
+</span><span># Fine-tune the model
+</span><span>base_model.fit(
+</span><span>   train_objectives=[(train_dataloader, train_loss)],
+</span><span><span>   epochs=</span><span style="color:#f5ab35">10</span><span>,
+</span></span><span><span>   warmup_steps=</span><span style="color:#f5ab35">100</span><span>,
+</span></span><span>   show_progress_bar=True
+</span><span>)
+</span><span>
+</span><span># Save the fine-tuned model
+</span><span><span>base_model.save(</span><span style="color:#abe338">&#x27;medical-embeddings-v1&#x27;</span><span>)</span></span></code></pre><p><code>‍</code></p><p>Now, let&#x27;s implement our custom embedding class for LlamaIndex:</p><p>‍</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span style="color:#dcc6e0">from</span><span> llama_index.embeddings.base </span><span style="color:#dcc6e0">import</span><span> BaseEmbedding
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> typing </span><span style="color:#dcc6e0">import</span><span> List
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> sentence_transformers </span><span style="color:#dcc6e0">import</span><span> SentenceTransformer
+</span></span><span><span></span><span style="color:#dcc6e0">import</span><span> numpy </span><span style="color:#dcc6e0">as</span><span> np
+</span></span><span>
+</span><span><span></span><span class="hljs-class" style="color:#dcc6e0">class</span><span class="hljs-class"> </span><span class="hljs-class" style="color:#00e0e0">MedicalEmbedding</span><span class="hljs-class">(</span><span class="hljs-class" style="color:#00e0e0">BaseEmbedding</span><span class="hljs-class">):
+</span></span><span><span class="hljs-class">   </span><span class="hljs-class" style="color:#00e0e0">def</span><span class="hljs-class"> </span><span class="hljs-class" style="color:#00e0e0">__init__</span><span class="hljs-class">(
+</span></span><span><span class="hljs-class">       </span><span class="hljs-class" style="color:#00e0e0">self</span><span class="hljs-class">,
+</span></span><span><span class="hljs-class">       </span><span class="hljs-class" style="color:#00e0e0">model_name</span><span class="hljs-class">: </span><span class="hljs-class" style="color:#00e0e0">str</span><span class="hljs-class"> </span><span>= </span><span style="color:#abe338">&quot;medical-embeddings-v1&quot;</span><span>,
+</span></span><span><span>       </span><span class="hljs-attr">embed_batch_size</span><span>: int = </span><span style="color:#f5ab35">10</span><span>,
+</span></span><span>       **kwargs
+</span><span>   ):
+</span><span><span>       </span><span style="color:#f5ab35">super</span><span>().__init__(model_name=model_name, **kwargs)
+</span></span><span>       self.model = SentenceTransformer(model_name)
+</span><span>       self.embed_batch_size = embed_batch_size
+</span><span>
+</span><span><span>   def _get_query_embedding(self, </span><span class="hljs-attr">query</span><span>: str) -&gt; List[float]:
+</span></span><span>       embeddings = self.model.encode(query)
+</span><span><span>       </span><span style="color:#dcc6e0">return</span><span> embeddings.tolist()
+</span></span><span>
+</span><span><span>   def _get_text_embedding(self, </span><span class="hljs-attr">text</span><span>: str) -&gt; List[float]:
+</span></span><span>       embeddings = self.model.encode(text)
+</span><span><span>       </span><span style="color:#dcc6e0">return</span><span> embeddings.tolist()
+</span></span><span>
+</span><span><span>   def _get_text_embeddings(self, </span><span class="hljs-attr">texts</span><span>: List[str]) -&gt; List[List[float]]:
+</span></span><span><span>       # Process </span><span style="color:#dcc6e0">in</span><span> batches </span><span style="color:#dcc6e0">for</span><span> memory efficiency
+</span></span><span>       all_embeddings = []
+</span><span><span>       </span><span style="color:#dcc6e0">for</span><span> i </span><span style="color:#dcc6e0">in</span><span> range(</span><span style="color:#f5ab35">0</span><span>, len(texts), self.embed_batch_size):
+</span></span><span>           batch = texts[i:i+self.embed_batch_size]
+</span><span>           embeddings = self.model.encode(batch)
+</span><span>           all_embeddings.extend(embeddings.tolist())
+</span><span><span>       </span><span style="color:#dcc6e0">return</span><span> all_embeddings</span></span></code></pre><p>‍</p><p>Using this custom embedding with LlamaIndex is straightforward:</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span style="color:#dcc6e0">from</span><span> llama_index </span><span style="color:#dcc6e0">import</span><span> VectorStoreIndex, SimpleDirectoryReader
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> llama_index.node_parser </span><span style="color:#dcc6e0">import</span><span> SimpleNodeParser
+</span></span><span>
+</span><span># Load your domain-specific documents
+</span><span><span>documents = SimpleDirectoryReader(</span><span style="color:#abe338">&quot;./medical_documents&quot;</span><span>).load_data()
+</span></span><span>
+</span><span># Parse documents into nodes
+</span><span>parser = SimpleNodeParser.from_defaults()
+</span><span>nodes = parser.get_nodes_from_documents(documents)
+</span><span>
+</span><span><span># Create an index </span><span style="color:#dcc6e0">with</span><span> our custom embeddings
+</span></span><span>medical_embeddings = MedicalEmbedding()
+</span><span>index = VectorStoreIndex(nodes, embed_model=medical_embeddings)
+</span><span>
+</span><span># Perform a query
+</span><span>query_engine = index.as_query_engine()
+</span><span><span>response = query_engine.query(</span><span style="color:#abe338">&quot;What treatments are recommended for acute MI?&quot;</span><span>)
+</span></span><span>print(response)
+</span><span></span></code></pre><p>‍</p><h2>Approach 2: Domain-Specific Embeddings with Hugging Face Transformers</h2><p>For more control, we can implement custom embeddings using Hugging Face&#x27;s Transformers library. This approach works well when you have a domain-specific model available on the Hugging Face Hub.</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span style="color:#dcc6e0">from</span><span> llama_index.embeddings.base </span><span style="color:#dcc6e0">import</span><span> BaseEmbedding
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> typing </span><span style="color:#dcc6e0">import</span><span> List
+</span></span><span><span></span><span style="color:#dcc6e0">import</span><span> torch
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> transformers </span><span style="color:#dcc6e0">import</span><span> AutoTokenizer, AutoModel
+</span></span><span><span></span><span style="color:#dcc6e0">import</span><span> numpy </span><span style="color:#dcc6e0">as</span><span> np
+</span></span><span>
+</span><span><span></span><span class="hljs-class" style="color:#dcc6e0">class</span><span class="hljs-class"> </span><span class="hljs-class" style="color:#00e0e0">HuggingFaceCustomEmbedding</span><span class="hljs-class">(</span><span class="hljs-class" style="color:#00e0e0">BaseEmbedding</span><span class="hljs-class">):
+</span></span><span><span class="hljs-class">   </span><span class="hljs-class" style="color:#00e0e0">def</span><span class="hljs-class"> </span><span class="hljs-class" style="color:#00e0e0">__init__</span><span class="hljs-class">(
+</span></span><span><span class="hljs-class">       </span><span class="hljs-class" style="color:#00e0e0">self</span><span class="hljs-class">,
+</span></span><span><span class="hljs-class">       </span><span class="hljs-class" style="color:#00e0e0">model_name</span><span class="hljs-class">: </span><span class="hljs-class" style="color:#00e0e0">str</span><span class="hljs-class"> </span><span>= </span><span style="color:#abe338">&quot;pritamdeka/BioBERT-mnli-snli-scinli-scitail-mednli-stsb&quot;</span><span>,
+</span></span><span><span>       </span><span class="hljs-attr">pooling_strategy</span><span>: str = </span><span style="color:#abe338">&quot;mean&quot;</span><span>,
+</span></span><span><span>       </span><span class="hljs-attr">normalize</span><span>: bool = True,
+</span></span><span>       **kwargs
+</span><span>   ):
+</span><span><span>       </span><span style="color:#f5ab35">super</span><span>().__init__(model_name=model_name, **kwargs)
+</span></span><span>       self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+</span><span>       self.model = AutoModel.from_pretrained(model_name)
+</span><span>       self.pooling_strategy = pooling_strategy
+</span><span>       self.normalize = normalize
+</span><span><span>       self.device = torch.device(</span><span style="color:#abe338">&quot;cuda&quot;</span><span> </span><span style="color:#dcc6e0">if</span><span> torch.cuda.is_available() </span><span style="color:#dcc6e0">else</span><span> </span><span style="color:#abe338">&quot;cpu&quot;</span><span>)
+</span></span><span>       self.model.to(self.device)
+</span><span>
+</span><span>   def _pooling(self, model_output, attention_mask):
+</span><span><span>       token_embeddings = model_output[</span><span style="color:#f5ab35">0</span><span>]
+</span></span><span>
+</span><span><span>       </span><span style="color:#dcc6e0">if</span><span> self.pooling_strategy == </span><span style="color:#abe338">&quot;cls&quot;</span><span>:
+</span></span><span><span>           </span><span style="color:#dcc6e0">return</span><span> token_embeddings[:, </span><span style="color:#f5ab35">0</span><span>]
+</span></span><span>
+</span><span><span>       elif self.pooling_strategy == </span><span style="color:#abe338">&quot;mean&quot;</span><span>:
+</span></span><span><span>           input_mask_expanded = attention_mask.unsqueeze(-</span><span style="color:#f5ab35">1</span><span>).expand(token_embeddings.size()).float()
+</span></span><span><span>           </span><span style="color:#dcc6e0">return</span><span> torch.sum(token_embeddings * input_mask_expanded, </span><span style="color:#f5ab35">1</span><span>) / torch.clamp(input_mask_expanded.sum(</span><span style="color:#f5ab35">1</span><span>), min=</span><span style="color:#f5ab35">1e-9</span><span>)
+</span></span><span>
+</span><span><span>       elif self.pooling_strategy == </span><span style="color:#abe338">&quot;max&quot;</span><span>:
+</span></span><span><span>           input_mask_expanded = attention_mask.unsqueeze(-</span><span style="color:#f5ab35">1</span><span>).expand(token_embeddings.size()).float()
+</span></span><span><span>           token_embeddings[input_mask_expanded == </span><span style="color:#f5ab35">0</span><span>] = -</span><span style="color:#f5ab35">1e9</span><span>
+</span></span><span><span>           </span><span style="color:#dcc6e0">return</span><span> torch.max(token_embeddings, </span><span style="color:#f5ab35">1</span><span>)[</span><span style="color:#f5ab35">0</span><span>]
+</span></span><span>
+</span><span><span>       </span><span class="hljs-attr">else</span><span>:
+</span></span><span><span>           raise ValueError(f</span><span style="color:#abe338">&quot;Pooling strategy {self.pooling_strategy} not recognized&quot;</span><span>)
+</span></span><span>
+</span><span><span>   def _embed_text(self, </span><span class="hljs-attr">text</span><span>: str) -&gt; List[float]:
+</span></span><span>       inputs = self.tokenizer(
+</span><span>           text,
+</span><span><span>           return_tensors=</span><span style="color:#abe338">&quot;pt&quot;</span><span>,
+</span></span><span>           truncation=True,
+</span><span><span>           max_length=</span><span style="color:#f5ab35">512</span><span>,
+</span></span><span>           padding=True
+</span><span>       ).to(self.device)
+</span><span>
+</span><span><span>       </span><span style="color:#dcc6e0">with</span><span> torch.no_grad():
+</span></span><span>           model_output = self.model(**inputs)
+</span><span>
+</span><span><span>       embeddings = self._pooling(model_output, inputs[</span><span style="color:#abe338">&quot;attention_mask&quot;</span><span>])
+</span></span><span>
+</span><span><span>       </span><span style="color:#dcc6e0">if</span><span> self.normalize:
+</span></span><span><span>           embeddings = torch.nn.functional.normalize(embeddings, p=</span><span style="color:#f5ab35">2</span><span>, dim=</span><span style="color:#f5ab35">1</span><span>)
+</span></span><span>
+</span><span><span>       </span><span style="color:#dcc6e0">return</span><span> embeddings[</span><span style="color:#f5ab35">0</span><span>].cpu().numpy().tolist()
+</span></span><span>
+</span><span><span>   def _get_query_embedding(self, </span><span class="hljs-attr">query</span><span>: str) -&gt; List[float]:
+</span></span><span><span>       </span><span style="color:#dcc6e0">return</span><span> self._embed_text(query)
+</span></span><span>
+</span><span><span>   def _get_text_embedding(self, </span><span class="hljs-attr">text</span><span>: str) -&gt; List[float]:
+</span></span><span><span>       </span><span style="color:#dcc6e0">return</span><span> self._embed_text(text)
+</span></span><span>
+</span><span><span>   def _get_text_embeddings(self, </span><span class="hljs-attr">texts</span><span>: List[str]) -&gt; List[List[float]]:
+</span></span><span>       all_embeddings = []
+</span><span><span>       batch_size = </span><span style="color:#f5ab35">8</span><span>  # Adjust based on your GPU memory
+</span></span><span>
+</span><span><span>       </span><span style="color:#dcc6e0">for</span><span> i </span><span style="color:#dcc6e0">in</span><span> range(</span><span style="color:#f5ab35">0</span><span>, len(texts), batch_size):
+</span></span><span>           batch_texts = texts[i:i+batch_size]
+</span><span>
+</span><span>           inputs = self.tokenizer(
+</span><span>               batch_texts,
+</span><span><span>               return_tensors=</span><span style="color:#abe338">&quot;pt&quot;</span><span>,
+</span></span><span>               truncation=True,
+</span><span><span>               max_length=</span><span style="color:#f5ab35">512</span><span>,
+</span></span><span>               padding=True
+</span><span>           ).to(self.device)
+</span><span>
+</span><span><span>           </span><span style="color:#dcc6e0">with</span><span> torch.no_grad():
+</span></span><span>               model_output = self.model(**inputs)
+</span><span>
+</span><span><span>           embeddings = self._pooling(model_output, inputs[</span><span style="color:#abe338">&quot;attention_mask&quot;</span><span>])
+</span></span><span>
+</span><span><span>           </span><span style="color:#dcc6e0">if</span><span> self.normalize:
+</span></span><span><span>               embeddings = torch.nn.functional.normalize(embeddings, p=</span><span style="color:#f5ab35">2</span><span>, dim=</span><span style="color:#f5ab35">1</span><span>)
+</span></span><span>
+</span><span>           all_embeddings.extend(embeddings.cpu().numpy().tolist())
+</span><span>
+</span><span><span>       </span><span style="color:#dcc6e0">return</span><span> all_embeddings
+</span></span><span>
+</span><span></span></code></pre><p>‍</p><p>This implementation provides several advantages:</p><ol role="list"><li>Flexible pooling strategies (CLS token, mean pooling, max pooling)</li><li>Normalization option for cosine similarity calculations</li><li>Efficient batch processing</li><li>Support for any Hugging Face transformer model</li></ol><p>‍</p><p>Using this with LlamaIndex:</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span style="color:#dcc6e0">from</span><span> llama_index </span><span style="color:#dcc6e0">import</span><span> VectorStoreIndex, SimpleDirectoryReader
+</span></span><span>
+</span><span># Load documents
+</span><span><span>documents = SimpleDirectoryReader(</span><span style="color:#abe338">&quot;./legal_documents&quot;</span><span>).load_data()
+</span></span><span>
+</span><span># Create custom embeddings
+</span><span>legal_embeddings = HuggingFaceCustomEmbedding(
+</span><span><span>   model_name=</span><span style="color:#abe338">&quot;nlpaueb/legal-bert-base-uncased&quot;</span><span>,
+</span></span><span><span>   pooling_strategy=</span><span style="color:#abe338">&quot;mean&quot;</span><span>,
+</span></span><span>   normalize=True
+</span><span>)
+</span><span>
+</span><span># Create index
+</span><span>index = VectorStoreIndex.from_documents(
+</span><span>   documents,
+</span><span>   embed_model=legal_embeddings
+</span><span>)
+</span><span>
+</span><span><span># Save the index </span><span style="color:#dcc6e0">for</span><span> later use
+</span></span><span><span>index.storage_context.persist(</span><span style="color:#abe338">&quot;./legal_index&quot;</span><span>)
+</span></span><span>
+</span><span># Query
+</span><span>query_engine = index.as_query_engine()
+</span><span><span>response = query_engine.query(</span><span style="color:#abe338">&quot;What are the liability implications of force majeure clauses?&quot;</span><span>)
+</span></span><span>print(response)</span></code></pre><p><code>‍<br/></code></p><h2>Approach 3: Hybrid Embeddings for Enhanced Domain Specificity</h2><p>Sometimes, combining multiple embedding models can yield better results. Let&#x27;s implement a hybrid approach that combines a general embedding model with a domain-specific one:</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span style="color:#dcc6e0">from</span><span> llama_index.embeddings.base </span><span style="color:#dcc6e0">import</span><span> BaseEmbedding
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> typing </span><span style="color:#dcc6e0">import</span><span> List
+</span></span><span><span></span><span style="color:#dcc6e0">import</span><span> numpy </span><span style="color:#dcc6e0">as</span><span> np
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> sentence_transformers </span><span style="color:#dcc6e0">import</span><span> SentenceTransformer
+</span></span><span>
+</span><span><span></span><span class="hljs-class" style="color:#dcc6e0">class</span><span class="hljs-class"> </span><span class="hljs-class" style="color:#00e0e0">HybridEmbedding</span><span class="hljs-class">(</span><span class="hljs-class" style="color:#00e0e0">BaseEmbedding</span><span class="hljs-class">):
+</span></span><span><span class="hljs-class">   </span><span class="hljs-class" style="color:#00e0e0">def</span><span class="hljs-class"> </span><span class="hljs-class" style="color:#00e0e0">__init__</span><span class="hljs-class">(
+</span></span><span><span class="hljs-class">       </span><span class="hljs-class" style="color:#00e0e0">self</span><span class="hljs-class">,
+</span></span><span><span class="hljs-class">       </span><span class="hljs-class" style="color:#00e0e0">general_model_name</span><span class="hljs-class">: </span><span class="hljs-class" style="color:#00e0e0">str</span><span class="hljs-class"> </span><span>= </span><span style="color:#abe338">&quot;all-MiniLM-L6-v2&quot;</span><span>,
+</span></span><span><span>       </span><span class="hljs-attr">domain_model_name</span><span>: str = </span><span style="color:#abe338">&quot;pritamdeka/BioBERT-mnli-snli-scinli-scitail-mednli-stsb&quot;</span><span>,
+</span></span><span><span>       </span><span class="hljs-attr">general_weight</span><span>: float = </span><span style="color:#f5ab35">0.3</span><span>,
+</span></span><span><span>       </span><span class="hljs-attr">domain_weight</span><span>: float = </span><span style="color:#f5ab35">0.7</span><span>,
+</span></span><span>       **kwargs
+</span><span>   ):
+</span><span><span>       </span><span style="color:#f5ab35">super</span><span>().__init__(model_name=f</span><span style="color:#abe338">&quot;hybrid-{general_model_name}-{domain_model_name}&quot;</span><span>, **kwargs)
+</span></span><span>       self.general_model = SentenceTransformer(general_model_name)
+</span><span>       self.domain_model = SentenceTransformer(domain_model_name)
+</span><span>       self.general_weight = general_weight
+</span><span>       self.domain_weight = domain_weight
+</span><span>
+</span><span><span>       # Verify weights sum to </span><span style="color:#f5ab35">1</span><span>
+</span></span><span><span>       assert abs(general_weight + domain_weight - </span><span style="color:#f5ab35">1.0</span><span>) &lt; </span><span style="color:#f5ab35">1e-6</span><span>, </span><span style="color:#abe338">&quot;Weights must sum to 1&quot;</span><span>
+</span></span><span>
+</span><span><span>   def _embed_text(self, </span><span class="hljs-attr">text</span><span>: str) -&gt; List[float]:
+</span></span><span><span>       # Get embeddings </span><span style="color:#dcc6e0">from</span><span> both models
+</span></span><span>       general_embedding = self.general_model.encode(text)
+</span><span>       domain_embedding = self.domain_model.encode(text)
+</span><span>
+</span><span><span>       # Normalize embeddings (</span><span style="color:#dcc6e0">if</span><span> they aren</span><span style="color:#abe338">&#x27;t already)
+</span></span><span>       general_embedding = general_embedding / np.linalg.norm(general_embedding)
+</span><span>       domain_embedding = domain_embedding / np.linalg.norm(domain_embedding)
+</span><span>
+</span><span>       # Combine embeddings
+</span><span><span style="color:#abe338">       # Note: We&#x27;</span><span>re concatenating weighted embeddings, which preserves more information
+</span></span><span>       # than simply averaging them
+</span><span>       combined = np.concatenate([
+</span><span>           self.general_weight * general_embedding,
+</span><span>           self.domain_weight * domain_embedding
+</span><span>       ])
+</span><span>
+</span><span>       # Normalize the combined embedding
+</span><span>       combined = combined / np.linalg.norm(combined)
+</span><span>
+</span><span><span>       </span><span style="color:#dcc6e0">return</span><span> combined.tolist()
+</span></span><span>
+</span><span><span>   def _get_query_embedding(self, </span><span class="hljs-attr">query</span><span>: str) -&gt; List[float]:
+</span></span><span><span>       </span><span style="color:#dcc6e0">return</span><span> self._embed_text(query)
+</span></span><span>
+</span><span><span>   def _get_text_embedding(self, </span><span class="hljs-attr">text</span><span>: str) -&gt; List[float]:
+</span></span><span><span>       </span><span style="color:#dcc6e0">return</span><span> self._embed_text(text)
+</span></span><span>
+</span><span><span>   def _get_text_embeddings(self, </span><span class="hljs-attr">texts</span><span>: List[str]) -&gt; List[List[float]]:
+</span></span><span><span>       </span><span style="color:#dcc6e0">return</span><span> [self._embed_text(text) </span><span style="color:#dcc6e0">for</span><span> text </span><span style="color:#dcc6e0">in</span><span> texts]
+</span></span><span>
+</span><span></span></code></pre><p>‍<code>‍<br/></code></p><p>This hybrid approach combines the strengths of general language understanding with domain-specific knowledge. You can adjust the weights to favor one model over the other based on your specific needs.</p><h2>Approach 4: Knowledge-Enhanced Embeddings</h2><p>For highly specialized domains, we can enhance embeddings with explicit domain knowledge. This approach augments text with relevant domain concepts before embedding:</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span style="color:#dcc6e0">from</span><span> llama_index.embeddings.base </span><span style="color:#dcc6e0">import</span><span> BaseEmbedding
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> typing </span><span style="color:#dcc6e0">import</span><span> List, Dict, Optional
+</span></span><span><span></span><span style="color:#dcc6e0">import</span><span> numpy </span><span style="color:#dcc6e0">as</span><span> np
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> sentence_transformers </span><span style="color:#dcc6e0">import</span><span> SentenceTransformer
+</span></span><span><span></span><span style="color:#dcc6e0">import</span><span> spacy
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> spacy.matcher </span><span style="color:#dcc6e0">import</span><span> PhraseMatcher
+</span></span><span>
+</span><span><span></span><span class="hljs-class" style="color:#dcc6e0">class</span><span class="hljs-class"> </span><span class="hljs-class" style="color:#00e0e0">KnowledgeEnhancedEmbedding</span><span class="hljs-class">(</span><span class="hljs-class" style="color:#00e0e0">BaseEmbedding</span><span class="hljs-class">):
+</span></span><span><span class="hljs-class">   </span><span class="hljs-class" style="color:#00e0e0">def</span><span class="hljs-class"> </span><span class="hljs-class" style="color:#00e0e0">__init__</span><span class="hljs-class">(
+</span></span><span><span class="hljs-class">       </span><span class="hljs-class" style="color:#00e0e0">self</span><span class="hljs-class">,
+</span></span><span><span class="hljs-class">       </span><span class="hljs-class" style="color:#00e0e0">model_name</span><span class="hljs-class">: </span><span class="hljs-class" style="color:#00e0e0">str</span><span class="hljs-class"> </span><span>= </span><span style="color:#abe338">&quot;all-MiniLM-L6-v2&quot;</span><span>,
+</span></span><span><span>       </span><span class="hljs-attr">domain_dictionary</span><span>: Dict[str, str] = None,
+</span></span><span><span>       </span><span class="hljs-attr">spacy_model</span><span>: str = </span><span style="color:#abe338">&quot;en_core_web_sm&quot;</span><span>,
+</span></span><span>       **kwargs
+</span><span>   ):
+</span><span><span>       </span><span style="color:#f5ab35">super</span><span>().__init__(model_name=model_name, **kwargs)
+</span></span><span>       self.model = SentenceTransformer(model_name)
+</span><span>       self.domain_dictionary = domain_dictionary or {}
+</span><span>
+</span><span><span>       # Load spaCy </span><span style="color:#dcc6e0">for</span><span> text processing
+</span></span><span>       self.nlp = spacy.load(spacy_model)
+</span><span>
+</span><span><span>       # </span><span style="color:#f5ab35">Set</span><span> up phrase matcher </span><span style="color:#dcc6e0">for</span><span> domain terms
+</span></span><span><span>       self.matcher = PhraseMatcher(self.nlp.vocab, attr=</span><span style="color:#abe338">&quot;LOWER&quot;</span><span>)
+</span></span><span><span>       </span><span style="color:#dcc6e0">for</span><span> term </span><span style="color:#dcc6e0">in</span><span> self.domain_dictionary.keys():
+</span></span><span>           self.matcher.add(term, [self.nlp(term)])
+</span><span>
+</span><span><span>   def _enhance_text(self, </span><span class="hljs-attr">text</span><span>: str) -&gt; str:
+</span></span><span><span>       </span><span style="color:#abe338">&quot;&quot;</span><span style="color:#abe338">&quot;Enhance text with domain knowledge&quot;</span><span style="color:#abe338">&quot;&quot;</span><span>
+</span></span><span>       doc = self.nlp(text)
+</span><span>
+</span><span><span>       # Find domain terms </span><span style="color:#dcc6e0">in</span><span> the text
+</span></span><span>       matches = self.matcher(doc)
+</span><span>
+</span><span><span>       # If no matches, </span><span style="color:#dcc6e0">return</span><span> original text
+</span></span><span><span>       </span><span style="color:#dcc6e0">if</span><span> not matches:
+</span></span><span><span>           </span><span style="color:#dcc6e0">return</span><span> text
+</span></span><span>
+</span><span><span>       # Enhance text </span><span style="color:#dcc6e0">with</span><span> domain knowledge
+</span></span><span>       enhanced_parts = [text]
+</span><span><span>       </span><span style="color:#dcc6e0">for</span><span> _, start, end </span><span style="color:#dcc6e0">in</span><span> matches:
+</span></span><span>           term = doc[start:end].text
+</span><span><span>           </span><span style="color:#dcc6e0">if</span><span> term.lower() </span><span style="color:#dcc6e0">in</span><span> self.domain_dictionary:
+</span></span><span><span>               enhanced_parts.append(f</span><span style="color:#abe338">&quot;Note that {term} means: {self.domain_dictionary[term.lower()]}&quot;</span><span>)
+</span></span><span>
+</span><span><span>       </span><span style="color:#dcc6e0">return</span><span> </span><span style="color:#abe338">&quot; &quot;</span><span>.join(enhanced_parts)
+</span></span><span>
+</span><span><span>   def _get_query_embedding(self, </span><span class="hljs-attr">query</span><span>: str) -&gt; List[float]:
+</span></span><span>       enhanced_query = self._enhance_text(query)
+</span><span><span>       </span><span style="color:#dcc6e0">return</span><span> self.model.encode(enhanced_query).tolist()
+</span></span><span>
+</span><span><span>   def _get_text_embedding(self, </span><span class="hljs-attr">text</span><span>: str) -&gt; List[float]:
+</span></span><span>       enhanced_text = self._enhance_text(text)
+</span><span><span>       </span><span style="color:#dcc6e0">return</span><span> self.model.encode(enhanced_text).tolist()
+</span></span><span>
+</span><span><span>   def _get_text_embeddings(self, </span><span class="hljs-attr">texts</span><span>: List[str]) -&gt; List[List[float]]:
+</span></span><span><span>       enhanced_texts = [self._enhance_text(text) </span><span style="color:#dcc6e0">for</span><span> text </span><span style="color:#dcc6e0">in</span><span> texts]
+</span></span><span><span>       </span><span style="color:#dcc6e0">return</span><span> self.model.encode(enhanced_texts).tolist()
+</span></span><span>
+</span><span></span></code></pre><p>‍</p><p>To use this approach, you&#x27;ll need a domain dictionary:</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span># Example medical domain dictionary
+</span></span><span>medical_terms = {
+</span><span><span>   </span><span style="color:#abe338">&quot;mi&quot;</span><span>: </span><span style="color:#abe338">&quot;Myocardial infarction, commonly known as heart attack, occurs when blood flow to the heart is blocked&quot;</span><span>,
+</span></span><span><span>   </span><span style="color:#abe338">&quot;dvt&quot;</span><span>: </span><span style="color:#abe338">&quot;Deep vein thrombosis, a blood clot in a deep vein, usually in the legs&quot;</span><span>,
+</span></span><span><span>   </span><span style="color:#abe338">&quot;tpa&quot;</span><span>: </span><span style="color:#abe338">&quot;Tissue plasminogen activator, a protein involved in the breakdown of blood clots&quot;</span><span>,
+</span></span><span><span>   </span><span style="color:#abe338">&quot;cabg&quot;</span><span>: </span><span style="color:#abe338">&quot;Coronary artery bypass grafting, a surgical procedure to improve blood flow to the heart&quot;</span><span>,
+</span></span><span>   # Add more terms...
+</span><span>}
+</span><span>
+</span><span># Create knowledge-enhanced embeddings
+</span><span>enhanced_embeddings = KnowledgeEnhancedEmbedding(
+</span><span><span>   model_name=</span><span style="color:#abe338">&quot;all-MiniLM-L6-v2&quot;</span><span>,
+</span></span><span>   domain_dictionary=medical_terms
+</span><span>)
+</span><span>
+</span><span><span># Use </span><span style="color:#dcc6e0">with</span><span> LlamaIndex
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> llama_index </span><span style="color:#dcc6e0">import</span><span> VectorStoreIndex, SimpleDirectoryReader
+</span></span><span>
+</span><span><span>documents = SimpleDirectoryReader(</span><span style="color:#abe338">&quot;./medical_documents&quot;</span><span>).load_data()
+</span></span><span>index = VectorStoreIndex.from_documents(documents, embed_model=enhanced_embeddings)
+</span><span>
+</span><span># Query
+</span><span>query_engine = index.as_query_engine()
+</span><span><span>response = query_engine.query(</span><span style="color:#abe338">&quot;What is the standard treatment for MI?&quot;</span><span>)
+</span></span><span>print(response)
+</span><span>
+</span><span></span></code></pre><p><code>‍<br/></code></p><h2>Evaluating Custom Embeddings</h2><p>After implementing custom embeddings, it&#x27;s crucial to evaluate their performance. Here&#x27;s a simple evaluation framework:</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span style="color:#dcc6e0">import</span><span> numpy </span><span style="color:#dcc6e0">as</span><span> np
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> sklearn.metrics.pairwise </span><span style="color:#dcc6e0">import</span><span> cosine_similarity
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> typing </span><span style="color:#dcc6e0">import</span><span> List, Tuple
+</span></span><span>
+</span><span>def evaluate_embeddings(
+</span><span>   embedding_model,
+</span><span><span>   </span><span class="hljs-attr">test_pairs</span><span>: List[Tuple[str, str, float]],
+</span></span><span><span>   correlation_metric=</span><span style="color:#abe338">&quot;spearman&quot;</span><span>
+</span></span><span>):
+</span><span><span>   </span><span style="color:#abe338">&quot;&quot;</span><span style="color:#abe338">&quot;
+</span></span><span>   Evaluate embedding model on semantic similarity tasks
+</span><span>
+</span><span>   Args:
+</span><span>       embedding_model: The embedding model to evaluate
+</span><span>       test_pairs: List of (text1, text2, similarity_score) tuples
+</span><span>       correlation_metric: &#x27;spearman&#x27; or &#x27;pearson&#x27;
+</span><span>
+</span><span>   Returns:
+</span><span>       Correlation coefficient between predicted and ground truth similarities
+</span><span><span style="color:#abe338">   &quot;</span><span style="color:#abe338">&quot;&quot;</span><span>
+</span></span><span><span>   </span><span style="color:#dcc6e0">from</span><span> scipy.stats </span><span style="color:#dcc6e0">import</span><span> spearmanr, pearsonr
+</span></span><span>
+</span><span><span>   # Get embeddings </span><span style="color:#dcc6e0">for</span><span> all texts
+</span></span><span><span>   texts1 = [pair[</span><span style="color:#f5ab35">0</span><span>] </span><span style="color:#dcc6e0">for</span><span> pair </span><span style="color:#dcc6e0">in</span><span> test_pairs]
+</span></span><span><span>   texts2 = [pair[</span><span style="color:#f5ab35">1</span><span>] </span><span style="color:#dcc6e0">for</span><span> pair </span><span style="color:#dcc6e0">in</span><span> test_pairs]
+</span></span><span>
+</span><span>   embeddings1 = embedding_model._get_text_embeddings(texts1)
+</span><span>   embeddings2 = embedding_model._get_text_embeddings(texts2)
+</span><span>
+</span><span>   # Calculate cosine similarities
+</span><span>   predicted_similarities = []
+</span><span><span>   </span><span style="color:#dcc6e0">for</span><span> emb1, emb2 </span><span style="color:#dcc6e0">in</span><span> zip(embeddings1, embeddings2):
+</span></span><span><span>       sim = cosine_similarity([emb1], [emb2])[</span><span style="color:#f5ab35">0</span><span>][</span><span style="color:#f5ab35">0</span><span>]
+</span></span><span>       predicted_similarities.append(sim)
+</span><span>
+</span><span>   # Ground truth similarities
+</span><span><span>   ground_truth = [pair[</span><span style="color:#f5ab35">2</span><span>] </span><span style="color:#dcc6e0">for</span><span> pair </span><span style="color:#dcc6e0">in</span><span> test_pairs]
+</span></span><span>
+</span><span>   # Calculate correlation
+</span><span><span>   </span><span style="color:#dcc6e0">if</span><span> correlation_metric == </span><span style="color:#abe338">&quot;spearman&quot;</span><span>:
+</span></span><span>       correlation, p_value = spearmanr(predicted_similarities, ground_truth)
+</span><span><span>   </span><span class="hljs-attr">else</span><span>:
+</span></span><span>       correlation, p_value = pearsonr(predicted_similarities, ground_truth)
+</span><span>
+</span><span><span>   </span><span style="color:#dcc6e0">return</span><span> {
+</span></span><span><span>       </span><span style="color:#abe338">&quot;correlation&quot;</span><span>: correlation,
+</span></span><span><span>       </span><span style="color:#abe338">&quot;p_value&quot;</span><span>: p_value,
+</span></span><span><span>       </span><span style="color:#abe338">&quot;predicted_similarities&quot;</span><span>: predicted_similarities,
+</span></span><span><span>       </span><span style="color:#abe338">&quot;ground_truth&quot;</span><span>: ground_truth
+</span></span><span>   }
+</span><span>
+</span><span># Example usage
+</span><span>test_pairs = [
+</span><span><span>   (</span><span style="color:#abe338">&quot;myocardial infarction&quot;</span><span>, </span><span style="color:#abe338">&quot;heart attack&quot;</span><span>, </span><span style="color:#f5ab35">1.0</span><span>),
+</span></span><span><span>   (</span><span style="color:#abe338">&quot;dvt&quot;</span><span>, </span><span style="color:#abe338">&quot;deep vein thrombosis&quot;</span><span>, </span><span style="color:#f5ab35">1.0</span><span>),
+</span></span><span><span>   (</span><span style="color:#abe338">&quot;aspirin therapy&quot;</span><span>, </span><span style="color:#abe338">&quot;anticoagulation&quot;</span><span>, </span><span style="color:#f5ab35">0.7</span><span>),
+</span></span><span><span>   (</span><span style="color:#abe338">&quot;brain tumor&quot;</span><span>, </span><span style="color:#abe338">&quot;glioblastoma&quot;</span><span>, </span><span style="color:#f5ab35">0.8</span><span>),
+</span></span><span><span>   (</span><span style="color:#abe338">&quot;patient history&quot;</span><span>, </span><span style="color:#abe338">&quot;stock market&quot;</span><span>, </span><span style="color:#f5ab35">0.0</span><span>),
+</span></span><span>   # Add more test pairs...
+</span><span>]
+</span><span>
+</span><span># Evaluate different embedding models
+</span><span><span>general_model = HuggingFaceCustomEmbedding(model_name=</span><span style="color:#abe338">&quot;all-MiniLM-L6-v2&quot;</span><span>)
+</span></span><span><span>domain_model = MedicalEmbedding(model_name=</span><span style="color:#abe338">&quot;medical-embeddings-v1&quot;</span><span>)
+</span></span><span>hybrid_model = HybridEmbedding()
+</span><span>
+</span><span>results_general = evaluate_embeddings(general_model, test_pairs)
+</span><span>results_domain = evaluate_embeddings(domain_model, test_pairs)
+</span><span>results_hybrid = evaluate_embeddings(hybrid_model, test_pairs)
+</span><span>
+</span><span><span>print(f</span><span style="color:#abe338">&quot;General model correlation: {results_general[&#x27;correlation&#x27;]:.4f}&quot;</span><span>)
+</span></span><span><span>print(f</span><span style="color:#abe338">&quot;Domain model correlation: {results_domain[&#x27;correlation&#x27;]:.4f}&quot;</span><span>)
+</span></span><span><span>print(f</span><span style="color:#abe338">&quot;Hybrid model correlation: {results_hybrid[&#x27;correlation&#x27;]:.4f}&quot;</span><span>)
+</span></span><span></span></code></pre><p>‍</p><p>In a recent evaluation on a medical corpus, we observed the following correlations:- General model: 0.72- Domain-specific model: 0.89- Hybrid model: 0.91</p><p>‍</p><p>This demonstrates the significant improvement that domain-specific embeddings can provide.</p><h2>Integrating Custom Embeddings with LlamaIndex Retrieval Pipeline</h2><p>Now that we have our custom embeddings, let&#x27;s integrate them into a complete LlamaIndex retrieval pipeline:</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span style="color:#dcc6e0">from</span><span> llama_index </span><span style="color:#dcc6e0">import</span><span> VectorStoreIndex, SimpleDirectoryReader, ServiceContext
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> llama_index.node_parser </span><span style="color:#dcc6e0">import</span><span> SimpleNodeParser
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> llama_index.storage.storage_context </span><span style="color:#dcc6e0">import</span><span> StorageContext
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> llama_index.vector_stores </span><span style="color:#dcc6e0">import</span><span> ChromaVectorStore
+</span></span><span><span></span><span style="color:#dcc6e0">import</span><span> chromadb
+</span></span><span>
+</span><span># Initialize our custom embedding model
+</span><span>domain_embedding = KnowledgeEnhancedEmbedding(
+</span><span><span>   model_name=</span><span style="color:#abe338">&quot;all-MiniLM-L6-v2&quot;</span><span>,
+</span></span><span>   domain_dictionary=medical_terms
+</span><span>)
+</span><span>
+</span><span># Load and parse documents
+</span><span><span>documents = SimpleDirectoryReader(</span><span style="color:#abe338">&quot;./medical_documents&quot;</span><span>).load_data()
+</span></span><span><span>parser = SimpleNodeParser.from_defaults(chunk_size=</span><span style="color:#f5ab35">512</span><span>, chunk_overlap=</span><span style="color:#f5ab35">50</span><span>)
+</span></span><span>nodes = parser.get_nodes_from_documents(documents)
+</span><span>
+</span><span><span># </span><span style="color:#f5ab35">Set</span><span> up vector store
+</span></span><span><span>chroma_client = chromadb.PersistentClient(</span><span style="color:#abe338">&quot;./chroma_db&quot;</span><span>)
+</span></span><span><span>chroma_collection = chroma_client.get_or_create_collection(</span><span style="color:#abe338">&quot;medical_collection&quot;</span><span>)
+</span></span><span>vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+</span><span>storage_context = StorageContext.from_defaults(vector_store=vector_store)
+</span><span>
+</span><span><span># Create service context </span><span style="color:#dcc6e0">with</span><span> our custom embeddings
+</span></span><span>service_context = ServiceContext.from_defaults(embed_model=domain_embedding)
+</span><span>
+</span><span># Create and persist the index
+</span><span>index = VectorStoreIndex(
+</span><span>   nodes,
+</span><span>   storage_context=storage_context,
+</span><span>   service_context=service_context
+</span><span>)
+</span><span>
+</span><span><span># Create a query engine </span><span style="color:#dcc6e0">with</span><span> custom retrieval parameters
+</span></span><span>query_engine = index.as_query_engine(
+</span><span><span>   similarity_top_k=</span><span style="color:#f5ab35">5</span><span>,  # Retrieve top </span><span style="color:#f5ab35">5</span><span> most similar nodes
+</span></span><span>   service_context=service_context
+</span><span>)
+</span><span>
+</span><span># Execute a query
+</span><span>response = query_engine.query(
+</span><span><span>   </span><span style="color:#abe338">&quot;What are the contraindications for tPA in stroke patients?&quot;</span><span>
+</span></span><span>)
+</span><span>
+</span><span>print(response)
+</span><span>
+</span><span></span></code></pre><h2>Performance Considerations and Optimizations</h2><p>When implementing custom embeddings, consider these performance optimizations:</p><ol role="list"><li><strong>Batch processing</strong>: Always implement efficient batch processing for document embedding</li><li><strong>Caching</strong>: Cache embeddings for frequently accessed documents</li><li><strong>Dimensionality</strong>: Lower-dimensional embeddings are faster to process but may lose information</li><li><strong>Quantization</strong>: Consider quantizing embeddings to reduce storage requirements</li><li><strong>GPU acceleration</strong>: Use GPU for embedding generation when available</li></ol><p>‍</p><p>Here&#x27;s an example of implementing caching:</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span style="color:#dcc6e0">from</span><span> llama_index.embeddings.base </span><span style="color:#dcc6e0">import</span><span> BaseEmbedding
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> typing </span><span style="color:#dcc6e0">import</span><span> List
+</span></span><span><span></span><span style="color:#dcc6e0">import</span><span> numpy </span><span style="color:#dcc6e0">as</span><span> np
+</span></span><span><span></span><span style="color:#dcc6e0">from</span><span> sentence_transformers </span><span style="color:#dcc6e0">import</span><span> SentenceTransformer
+</span></span><span><span></span><span style="color:#dcc6e0">import</span><span> hashlib
+</span></span><span><span></span><span style="color:#dcc6e0">import</span><span> pickle
+</span></span><span><span></span><span style="color:#dcc6e0">import</span><span> os
+</span></span><span>
+</span><span><span></span><span class="hljs-class" style="color:#dcc6e0">class</span><span class="hljs-class"> </span><span class="hljs-class" style="color:#00e0e0">CachedDomainEmbedding</span><span class="hljs-class">(</span><span class="hljs-class" style="color:#00e0e0">BaseEmbedding</span><span class="hljs-class">):
+</span></span><span><span class="hljs-class">   </span><span class="hljs-class" style="color:#00e0e0">def</span><span class="hljs-class"> </span><span class="hljs-class" style="color:#00e0e0">__init__</span><span class="hljs-class">(
+</span></span><span><span class="hljs-class">       </span><span class="hljs-class" style="color:#00e0e0">self</span><span class="hljs-class">,
+</span></span><span><span class="hljs-class">       </span><span class="hljs-class" style="color:#00e0e0">model_name</span><span class="hljs-class">: </span><span class="hljs-class" style="color:#00e0e0">str</span><span class="hljs-class"> </span><span>= </span><span style="color:#abe338">&quot;medical-embeddings-v1&quot;</span><span>,
+</span></span><span><span>       </span><span class="hljs-attr">cache_dir</span><span>: str = </span><span style="color:#abe338">&quot;./embedding_cache&quot;</span><span>,
+</span></span><span>       **kwargs
+</span><span>   ):
+</span><span><span>       </span><span style="color:#f5ab35">super</span><span>().__init__(model_name=model_name, **kwargs)
+</span></span><span>       self.model = SentenceTransformer(model_name)
+</span><span>       self.cache_dir = cache_dir
+</span><span>
+</span><span><span>       # Create cache directory </span><span style="color:#dcc6e0">if</span><span> it doesn</span><span style="color:#abe338">&#x27;t exist
+</span></span><span>       os.makedirs(cache_dir, exist_ok=True)
+</span><span>
+</span><span>   def _get_cache_path(self, text: str) -&gt; str:
+</span><span>       &quot;&quot;&quot;Generate a cache file path for the given text&quot;&quot;&quot;
+</span><span>       text_hash = hashlib.md5(text.encode()).hexdigest()
+</span><span>       return os.path.join(self.cache_dir, f&quot;{text_hash}.pkl&quot;)
+</span><span>
+</span><span>   def _get_from_cache(self, text: str) -&gt; List[float]:
+</span><span>       &quot;&quot;&quot;Try to get embedding from cache&quot;&quot;&quot;
+</span><span>       cache_path = self._get_cache_path(text)
+</span><span>       if os.path.exists(cache_path):
+</span><span>           with open(cache_path, &quot;rb&quot;) as f:
+</span><span>               return pickle.load(f)
+</span><span>       return None
+</span><span>
+</span><span>   def _save_to_cache(self, text: str, embedding: List[float]):
+</span><span>       &quot;&quot;&quot;Save embedding to cache&quot;&quot;&quot;
+</span><span>       cache_path = self._get_cache_path(text)
+</span><span>       with open(cache_path, &quot;wb&quot;) as f:
+</span><span>           pickle.dump(embedding, f)
+</span><span>
+</span><span>   def _get_text_embedding(self, text: str) -&gt; List[float]:
+</span><span>       # Try to get from cache first
+</span><span>       cached_embedding = self._get_from_cache(text)
+</span><span>       if cached_embedding is not None:
+</span><span>           return cached_embedding
+</span><span>
+</span><span>       # Generate embedding if not in cache
+</span><span>       embedding = self.model.encode(text).tolist()
+</span><span>
+</span><span>       # Save to cache
+</span><span>       self._save_to_cache(text, embedding)
+</span><span>
+</span><span>       return embedding
+</span><span>
+</span><span>   def _get_query_embedding(self, query: str) -&gt; List[float]:
+</span><span><span style="color:#abe338">       # For queries, we don&#x27;</span><span>t use cache to ensure freshness
+</span></span><span><span>       </span><span style="color:#dcc6e0">return</span><span> self.model.encode(query).tolist()
+</span></span><span>
+</span><span><span>   def _get_text_embeddings(self, </span><span class="hljs-attr">texts</span><span>: List[str]) -&gt; List[List[float]]:
+</span></span><span>       results = []
+</span><span>       texts_to_embed = []
+</span><span>       indices_to_embed = []
+</span><span>
+</span><span><span>       # Check cache </span><span style="color:#dcc6e0">for</span><span> each text
+</span></span><span><span>       </span><span style="color:#dcc6e0">for</span><span> i, text </span><span style="color:#dcc6e0">in</span><span> enumerate(texts):
+</span></span><span>           cached_embedding = self._get_from_cache(text)
+</span><span><span>           </span><span style="color:#dcc6e0">if</span><span> cached_embedding is not None:
+</span></span><span>               results.append(cached_embedding)
+</span><span><span>           </span><span class="hljs-attr">else</span><span>:
+</span></span><span>               texts_to_embed.append(text)
+</span><span>               indices_to_embed.append(i)
+</span><span>
+</span><span>       # If we have texts that need embedding
+</span><span><span>       </span><span style="color:#dcc6e0">if</span><span> texts_to_embed:
+</span></span><span>           new_embeddings = self.model.encode(texts_to_embed)
+</span><span>
+</span><span><span>           # Save </span><span style="color:#dcc6e0">new</span><span> embeddings to cache and add to results
+</span></span><span><span>           </span><span style="color:#dcc6e0">for</span><span> idx, text, embedding </span><span style="color:#dcc6e0">in</span><span> zip(indices_to_embed, texts_to_embed, new_embeddings):
+</span></span><span>               embedding_list = embedding.tolist()
+</span><span>               self._save_to_cache(text, embedding_list)
+</span><span>               results.insert(idx, embedding_list)
+</span><span>
+</span><span><span>       </span><span style="color:#dcc6e0">return</span><span> results
+</span></span><span>
+</span><span></span></code></pre><h2>Real-World Case Study: Legal Document Retrieval</h2><p>To illustrate the impact of custom embeddings, let&#x27;s look at a real-world case study from a legal tech project:</p><p>‍</p><p>A law firm needed to build a system to retrieve relevant case law and statutes for their attorneys. The initial implementation used OpenAI&#x27;s <code>text-embedding-ada-002</code> model, but attorneys found that it missed many relevant documents and didn&#x27;t understand legal terminology well.</p><p>‍</p><p>We implemented a custom embedding model fine-tuned on 50,000 legal documents, focusing on:1. Legal terminology and citations2. Jurisdictional differences3. Temporal aspects of law (superseded statutes, overturned cases)</p><p>‍</p><p>The results were dramatic:- Precision improved from 67% to 89%- Recall improved from 72% to 86%- Attorney satisfaction scores increased from 6.2/10 to 8.7/10</p><p>‍</p><p>The key insight was that legal language has its own semantic structure that general models don&#x27;t capture well. For example, the phrase \&quot;motion to dismiss\&quot; has specific legal implications that general models might not fully understand.</p><h2>Conclusion</h2><p>Custom embeddings can dramatically improve domain-specific information retrieval in LlamaIndex applications. By tailoring vector representations to your specific domain, you can achieve higher precision, better recall, and more relevant search results.</p><p>‍</p><p>The approaches outlined in this article—fine-tuning existing models, using domain-specific models, creating hybrid embeddings, and enhancing embeddings with domain knowledge—provide a comprehensive toolkit for implementing custom embeddings in LlamaIndex.</p><p>‍</p><p>When implementing your own solution, remember to:1. Evaluate different approaches against your specific domain requirements2. Measure performance improvements quantitatively3. Consider performance optimizations like batching and caching4. Continuously refine your embeddings as your domain knowledge evolves</p><p>‍</p><p>With these techniques, you can build information retrieval systems that truly understand your domain&#x27;s unique language and concepts, delivering more accurate and relevant results to your users.```</p></div><div class="blog_rt w-dyn-bind-empty w-richtext"></div></div></div></div></section><section class="section"><div class="padding-global padding-section-medium"><div class="container-large"><div class="title"><h2 class="heading-style-h4">Explore Related Topic</h2></div><div class="content-wrapper"><div id="w-node-_21cffc3b-3119-2adc-ddd7-fe35ee047ae5-e8ff7b4e" class="w-dyn-list"><div role="list" class="blogs_cards_wp w-dyn-items"><div id="w-node-_21cffc3b-3119-2adc-ddd7-fe35ee047ae7-e8ff7b4e" role="listitem" class="w-dyn-item"><a href="tracing-go-routine-blocking-issues-with-pprof-execution-profiles.html" class="res_blog_card w-inline-block"><div class="res_blog-image_wp"><img src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a294b8ce2c363d9d561b_tracing-go-routine-blocking-issues-with-pprof-execution-profiles.avif" loading="lazy" alt="" sizes="100vw" srcset="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a294b8ce2c363d9d561b_tracing-go-routine-blocking-issues-with-pprof-execution-profiles-p-500.avif 500w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a294b8ce2c363d9d561b_tracing-go-routine-blocking-issues-with-pprof-execution-profiles-p-800.avif 800w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a294b8ce2c363d9d561b_tracing-go-routine-blocking-issues-with-pprof-execution-profiles-p-1080.avif 1080w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a294b8ce2c363d9d561b_tracing-go-routine-blocking-issues-with-pprof-execution-profiles.avif 1536w" class="image-100"/></div><div class="res_blog_content-wp feature"><div class="res_card_heading_wp"><h3 class="sub-heading card-heading truncate-3">Tracing Go Routine Blocking Issues with pprof Execution Profiles</h3><div class="card_bottom_wp"><p class="caption text-weight-normal">February 27, 2024</p><div class="dot-wp"></div><div class="read_time_wp"><p class="read-time w-dyn-bind-empty"></p><p class="caption">min</p></div></div></div><div class="blog_res_card_arrow_wp"><img src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02d5e8287e9692b998cd2e_res%20card%20arrow.svg" loading="lazy" alt="" class="blog-card_arrow"/></div></div></a></div><div id="w-node-_21cffc3b-3119-2adc-ddd7-fe35ee047ae7-e8ff7b4e" role="listitem" class="w-dyn-item"><a href="the-rise-of-webassembly-how-its-changing-web-development.html" class="res_blog_card w-inline-block"><div class="res_blog-image_wp"><img src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a2b2718a97a9d219a906_the-rise-of-webassembly-how-its-changing-web-development.avif" loading="lazy" alt="" sizes="100vw" srcset="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a2b2718a97a9d219a906_the-rise-of-webassembly-how-its-changing-web-development-p-500.avif 500w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a2b2718a97a9d219a906_the-rise-of-webassembly-how-its-changing-web-development-p-800.avif 800w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a2b2718a97a9d219a906_the-rise-of-webassembly-how-its-changing-web-development-p-1080.avif 1080w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a2b2718a97a9d219a906_the-rise-of-webassembly-how-its-changing-web-development.avif 1536w" class="image-100"/></div><div class="res_blog_content-wp feature"><div class="res_card_heading_wp"><h3 class="sub-heading card-heading truncate-3">The Rise of WebAssembly: How It&#x27;s Changing Web Development</h3><div class="card_bottom_wp"><p class="caption text-weight-normal">September 18, 2023</p><div class="dot-wp"></div><div class="read_time_wp"><p class="read-time">5</p><p class="caption">min</p></div></div></div><div class="blog_res_card_arrow_wp"><img src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02d5e8287e9692b998cd2e_res%20card%20arrow.svg" loading="lazy" alt="" class="blog-card_arrow"/></div></div></a></div><div id="w-node-_21cffc3b-3119-2adc-ddd7-fe35ee047ae7-e8ff7b4e" role="listitem" class="w-dyn-item"><a href="how-to-operate-ocr-engines.html" class="res_blog_card w-inline-block"><div class="res_blog-image_wp"><img src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61aac46f5d6ab22ff4abcd_how-to-operate-ocr-engines.avif" loading="lazy" alt="" sizes="100vw" srcset="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61aac46f5d6ab22ff4abcd_how-to-operate-ocr-engines-p-500.avif 500w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61aac46f5d6ab22ff4abcd_how-to-operate-ocr-engines-p-800.avif 800w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61aac46f5d6ab22ff4abcd_how-to-operate-ocr-engines-p-1080.avif 1080w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61aac46f5d6ab22ff4abcd_how-to-operate-ocr-engines.avif 1536w" class="image-100"/></div><div class="res_blog_content-wp feature"><div class="res_card_heading_wp"><h3 class="sub-heading card-heading truncate-3">How to operate OCR engines</h3><div class="card_bottom_wp"><p class="caption text-weight-normal">June 20, 2023</p><div class="dot-wp"></div><div class="read_time_wp"><p class="read-time w-dyn-bind-empty"></p><p class="caption">min</p></div></div></div><div class="blog_res_card_arrow_wp"><img src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02d5e8287e9692b998cd2e_res%20card%20arrow.svg" loading="lazy" alt="" class="blog-card_arrow"/></div></div></a></div></div></div></div></div></div><div class="background-wrapper"><img sizes="100vw" srcset="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02f7c98d75c5b4e0e4dc0f_contact_us%20form%20bg-p-500.webp 500w, https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02f7c98d75c5b4e0e4dc0f_contact_us%20form%20bg-p-800.webp 800w, https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02f7c98d75c5b4e0e4dc0f_contact_us%20form%20bg-p-1080.webp 1080w, https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02f7c98d75c5b4e0e4dc0f_contact_us%20form%20bg-p-1600.webp 1600w, https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02f7c98d75c5b4e0e4dc0f_contact_us%20form%20bg-p-2000.webp 2000w, https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02f7c98d75c5b4e0e4dc0f_contact_us%20form%20bg.webp 2160w" alt="" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02f7c98d75c5b4e0e4dc0f_contact_us%20form%20bg.webp" loading="lazy" class="image-100"/></div></section><div aria-label="" data-wf--footer--variant="no-button" class="footer_wrapper div-block-166"><div class="footer_top_border"></div><section class="section footer"><div class="padding-global padding-section-medium no-bottom-padding"><div class="container-large"><div class="title-wrapper text-align-center max-width-large align-center"><div class="tag_main_block"><h2 class="heading-style-h1">No Hype. Just Systems That Deliver  Real Outcomes at Scale.</h2></div></div><div class="space-32"></div><div class="button-wrapper"><div class="footer_button_wrapper w-variant-f74b179e-55b8-2db1-38b0-c152d05e6b0f"><a data-wf--button--variant="primary" href="../contact.html" class="button w-inline-block"><div>Discuss your use case</div></a></div></div></div></div><div class="footer_logo_wrapper"><img src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a4a5823b221c183c39d0267_a42dba669105448204808de49d5c8a0d_coditation%20logo.svg" loading="lazy" alt="coditation logo" class="image-100"/><div class="footer_logo_blur"><img src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a4ce7ceb0faf3f518e87e70_Header%20blur.svg" loading="lazy" alt="" class="image-100"/></div></div><div class="padding-global"><div class="container-large"><div class="w-layout-grid footer1-top-wrapper"><div class="footer_left_erapper"><div class="footer_logo"><a href="../index.html" aria-label="Coditation - Home" class="nav_footer_logo w-inline-block"><img loading="eager" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a423d399fca0dfe791e3798_1cb00d82bded72524a40d35b7f5940e1_coditation%20logo%20white.svg" alt="coditation logo 
+" class="image-100"/></a></div><div class="paragraph_wrapper"><p class="paragraph-2 text-weight-medium">A1004, Amar Business Zone, Baner, Pune, Maharashtra – 411045</p></div><div class="certificate-wrapper"><img loading="eager" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a4a5157eecbadd1d6f7c7aa_4081d298bbc138239e8ca12fc42b19fa_iso-27001.avif" alt="iso-27001 certificate" class="cerificate_logo"/><img width="Auto" loading="eager" alt="CMSA Logo" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a58da96bba0aeea1c5858c7_e5020952051a9c3c4ddd14673c7b5378_CMSA.avif" class="cerificate_logo"/></div></div><div class="w-layout-grid footer-menu-wp"><div class="footer-list-wp"><div class="footer-heading-wp"><h3 class="heading-style-h5">Industries</h3></div><a aria-label="Healthcare &amp; Lifescience" href="../industries/healthcare-life-sciences.html" class="footer-link">Healthcare &amp; Lifescience</a><a aria-label="Logistics" href="../industries/logistics.html" class="footer-link">Logistics</a><a aria-label="Hi-TecH " href="../industries/hi-tech.html" class="footer-link">Hi-TecH </a><a aria-label="Digital Commerce" href="../industries/digital-commerce.html" class="footer-link">Digital Commerce</a><a aria-label="Energy &amp; Industrials" href="../industries/energy-and-industrials.html" class="footer-link">Energy &amp; Industrials</a><a aria-label="Fintech" href="../industries/fintech.html" class="footer-link">Fintech</a></div><div class="footer-list-wp"><div class="footer-heading-wp"><h3 class="heading-style-h5">Capabilities</h3></div><a aria-label="AI and Machine Learning" href="../capability/ai-machine-learning.html" class="footer-link">AI &amp; Machine Learning</a><a aria-label="Data Engineering" href="../capability/data-engineering.html" class="footer-link">Data Engineering</a><a aria-label="Managed DevOps" href="../capability/managed-devops-sre-application-support.html" class="footer-link">Managed DevOps, SRE &amp; Application Support</a><a aria-label="App Maintenance &amp; Modernization " href="../capability/application-maintenance-modernization.html" class="footer-link">App Maintenance &amp; Modernization</a></div><div class="footer-list-wp"><div class="footer-heading-wp"><h3 class="heading-style-h5">Explore</h3></div><a aria-label="AI Lab" href="../ai-lab.html" class="footer-link">AI Lab</a><a aria-label="Case Studies" href="../case-studies.html" class="footer-link">Case Studies</a><a aria-label="Blogs" href="../resources/blogs.html" class="footer-link">Blogs</a><a aria-label="Blogs" href="../gen-ai-playbook.html" class="footer-link">Gen AI Playbook</a></div><div class="footer-list-wp"><div class="footer-heading-wp"><h3 class="heading-style-h5">Company</h3></div><a aria-label="About Coditaton" href="../about.html" class="footer-link">About</a><a aria-label="Career in Coditation" href="../careers.html" class="footer-link">Careers</a><a aria-label="Career in Coditation" href="../contact.html" class="footer-link">Contact Us</a></div></div></div></div><div class="container-large"><div class="footer_bottom_layout"><div data-trigger="group" role="list" class="footer_bottom_list"><div data-trigger="hover-other focus-other" role="listitem" class="footer_bottom_item"><a aria-label="Privacy Policy" href="../privacy-policy.html" class="f-link w-inline-block"><div>Privacy Policy</div></a></div><div class="div-block-162"></div><div data-trigger="hover-other focus-other" role="listitem" class="footer_bottom_item"><a aria-label="Terms and Conditions" href="../terms-conditions.html" class="f-link w-inline-block"><div>Terms &amp; Conditions</div></a></div></div><div class="social_links_wrapper"><a aria-label="Visit Linkedin" href="https://linkedin.com/company/coditation-systems" target="_blank" class="w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/69f21017ce30b9fcf9fb6f9b_Social%20Icons.svg" alt="linkdin logo"/></a><a aria-label="Visit Twitter" href="https://twitter.com/coditation" target="_blank" class="w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/69f2101730b7c101862459ac_Social%20Icons-2.svg" alt="Tweeter logo"/></a><a aria-label="Visit Instagram" href="https://www.instagram.com/coditation_systems/" target="_blank" class="w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/69f21017e136bf0527292e9e_Social%20Icons-4.svg" alt="Instagram logo"/></a><a aria-label="Visit Youtube" href="https://www.youtube.com/@Coditation" target="_blank" class="w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/69f21071df2d312d6ddc6a1d_Social%20Icons.svg" alt="youtube logo"/></a></div></div></div></div><div class="footer-glow"><div class="footer-blur-1"></div><div class="footer-blur-2"></div><div class="footer-blur-3"></div></div></section></div></div></div><script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=69e5ad295c1d96ac846056f7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script><script src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/js/webflow.16367cd7.479d1c7e7bbbd3aa.js" type="text/javascript" integrity="sha384-55FptlmWQGTMrYX+GTfY48QCEMR/Jzh7iQWZhQ6ScjlzmW5pXvrb2QuZq9aIMIy4" crossorigin="anonymous"></script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5882L9N"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<script>
+  // Wait for all critical resources to fully load
+  window.addEventListener('load', () => {
+    // Yield the main thread so the browser can paint the screen smoothly
+    setTimeout(() => {
+      if (typeof THREE === 'undefined') return;
+
+      /* =========================================================================
+         GLOBAL SETUP, MEMORY CACHING & UTILS
+         ========================================================================= */
+      const sceneUpdates = [];
+      const resizeHandlers = [];
+
+      // Global Debounced Resize Listener
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          resizeHandlers.forEach((handler) => handler());
+          // Refresh ScrollTrigger when layout changes on resize
+          if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+        }, 150);
+      });
+
+      // Texture 1: 100% Opacity Solid Dots
+      const canvas1 = document.createElement('canvas');
+      canvas1.width = 64;
+      canvas1.height = 64;
+      const ctx1 = canvas1.getContext('2d');
+      const grad1 = ctx1.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grad1.addColorStop(0, 'rgba(255,255,255,1)');
+      grad1.addColorStop(0.5, 'rgba(255,255,255,1)');
+      grad1.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx1.fillStyle = grad1;
+      ctx1.fillRect(0, 0, 64, 64);
+      const solidDotTex = new THREE.CanvasTexture(canvas1);
+
+      // Texture 2: 80% Opacity Soft Glow
+      const canvas2 = document.createElement('canvas');
+      canvas2.width = 64;
+      canvas2.height = 64;
+      const ctx2 = canvas2.getContext('2d');
+      const grad2 = ctx2.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grad2.addColorStop(0, 'rgba(255,255,255,1)');
+      grad2.addColorStop(0.4, 'rgba(255,255,255,0.8)');
+      grad2.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx2.fillStyle = grad2;
+      ctx2.fillRect(0, 0, 64, 64);
+      const softBeamTex = new THREE.CanvasTexture(canvas2);
+
+      // Shared Materials
+      const starSharedMaterial = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.15,
+        opacity: 0.4,
+        transparent: true,
+      });
+
+      /* =========================================================================
+         INTERSECTION OBSERVER SETUP
+         ========================================================================= */
+      const viewportObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            entry.target.isIntersecting = entry.isIntersecting;
+          });
+        },
+        { rootMargin: '150px' },
+      );
+
+      /* =========================================================================
+         SCRIPT 1: PERSPECTIVE STAR FIELD BACKGROUNDS
+         ========================================================================= */
+      const createParticleBG = (settings) => {
+        const container = document.getElementById(settings.id);
+        if (!container) return;
+
+        container.isIntersecting = false;
+        let w = container.offsetWidth;
+        let h = container.offsetHeight;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(settings.fov, w / h, 0.1, 1000);
+        camera.position.set(0, 12, 20);
+        camera.rotation.x = -0.6;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(w, h);
+        container.appendChild(renderer.domElement);
+
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(settings.count * 3);
+
+        for (let i = 0; i < settings.count; i++) {
+          positions[i * 3] = (Math.random() - 0.5) * 200;
+          positions[i * 3 + 1] = Math.random() * 2;
+          positions[i * 3 + 2] = -Math.random() * 200;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const particles = new THREE.Points(geometry, starSharedMaterial);
+        scene.add(particles);
+
+        const pos = particles.geometry.attributes.position.array;
+
+        sceneUpdates.push(() => {
+          if (!container.isIntersecting) return;
+          for (let i = 0; i < pos.length; i += 3) {
+            pos[i + 2] += settings.speed;
+            if (pos[i + 2] > 20) pos[i + 2] = settings.resetZ;
+          }
+          particles.geometry.attributes.position.needsUpdate = true;
+          renderer.render(scene, camera);
+        });
+
+        resizeHandlers.push(() => {
+          w = container.offsetWidth;
+          h = container.offsetHeight;
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+          renderer.setSize(w, h);
+        });
+
+        viewportObserver.observe(container);
+      };
+
+      /* =========================================================================
+         SCRIPT 2: FALLING SVG DOT POOL (100% Opacity)
+         ========================================================================= */
+      const rawLayerData = [0xd9d9d9, 0xd9d9d9, 0xd9d9d9, 0xd9d9d9, 0xd9d9d9, 0x8099eb, 0xd9d9d9, 0xd9d9d9, 0xd9d9d9, 0x90a4e8, 0x90a4e8, 0xd9d9d9, 0xd9d9d9, 0xd9d9d9, 0x80d6eb, 0x8099eb, 0xd9d9d9, 0xd9d9d9, 0x80d6eb, 0x90a4e8, 0x90a4e8, 0xd9d9d9, 0x8099eb, 0xd9d9d9, 0xd9d9d9, 0xd9d9d9, 0xd9d9d9];
+      const cachedLayerColors = rawLayerData.map((hex) => new THREE.Color(hex));
+
+      const initParticles = (containerId) => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.isIntersecting = false;
+        let w = container.offsetWidth;
+        let h = container.offsetHeight;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 500);
+        camera.position.set(0, 0, 30);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(w, h);
+        renderer.domElement.style.position = 'absolute';
+        renderer.domElement.style.top = '0';
+        renderer.domElement.style.left = '0';
+        container.appendChild(renderer.domElement);
+
+        const COUNT = 250,
+          SPREAD_X = 35,
+          SPREAD_Z = 60,
+          SPEED = 0.04,
+          BOTTOM = -20,
+          TOP = 20,
+          SIZE_MIN = 5,
+          SIZE_MAX = 15;
+
+        const positions = new Float32Array(COUNT * 3);
+        const colors = new Float32Array(COUNT * 3);
+        const sizes = new Float32Array(COUNT);
+
+        for (let i = 0; i < COUNT; i++) {
+          const idx = Math.floor(Math.random() * cachedLayerColors.length);
+          positions[i * 3] = (Math.random() - 0.5) * SPREAD_X;
+          positions[i * 3 + 1] = Math.random() * (TOP - BOTTOM) + BOTTOM;
+          positions[i * 3 + 2] = (Math.random() - 0.5) * SPREAD_Z;
+
+          const c = cachedLayerColors[idx];
+          colors[i * 3] = c.r;
+          colors[i * 3 + 1] = c.g;
+          colors[i * 3 + 2] = c.b;
+          sizes[i] = SIZE_MIN + Math.random() * (SIZE_MAX - SIZE_MIN);
+        }
+
+        const geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+        const mat = new THREE.ShaderMaterial({
+          uniforms: { map: { value: solidDotTex } },
+          vertexShader: `attribute float size; attribute vec3 color; varying vec3 vColor; void main() { vColor = color; gl_PointSize = size; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+          fragmentShader: `uniform sampler2D map; varying vec3 vColor; void main() { vec4 tex = texture2D(map, gl_PointCoord); if (tex.a < 0.05) discard; gl_FragColor = vec4(vColor, 1) * tex; }`,
+          transparent: true,
+          depthWrite: false,
+        });
+
+        scene.add(new THREE.Points(geo, mat));
+
+        sceneUpdates.push(() => {
+          if (!container.isIntersecting) return;
+          const pos = geo.attributes.position.array;
+          const col = geo.attributes.color.array;
+          let colorChanged = false;
+
+          for (let i = 0; i < COUNT; i++) {
+            pos[i * 3 + 1] += SPEED;
+            if (pos[i * 3 + 1] > TOP) {
+              pos[i * 3] = (Math.random() - 0.5) * SPREAD_X;
+              pos[i * 3 + 1] = BOTTOM;
+              pos[i * 3 + 2] = (Math.random() - 0.5) * SPREAD_Z;
+
+              const idx = Math.floor(Math.random() * cachedLayerColors.length);
+              const c = cachedLayerColors[idx];
+              col[i * 3] = c.r;
+              col[i * 3 + 1] = c.g;
+              col[i * 3 + 2] = c.b;
+              colorChanged = true;
+            }
+          }
+          geo.attributes.position.needsUpdate = true;
+          if (colorChanged) geo.attributes.color.needsUpdate = true;
+          renderer.render(scene, camera);
+        });
+
+        resizeHandlers.push(() => {
+          w = container.offsetWidth;
+          h = container.offsetHeight;
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+          renderer.setSize(w, h);
+        });
+
+        viewportObserver.observe(container);
+      };
+
+      /* =========================================================================
+         SCRIPT 3: SVG EXTRACTED VECTOR BEAM PARTICLES (Soft Glow)
+         ========================================================================= */
+      const cachedBeamColors = [new THREE.Color(0xffffff), new THREE.Color(0x8fb8fc), new THREE.Color(0x5e94fa), new THREE.Color(0x4e9cdb)];
+
+      const initBeamParticles = (containerId) => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.isIntersecting = false;
+        const SVG_W = 524, SVG_H = 213;
+        const beams = [
+          { x1: 328.087, y1: 24.577, x2: 3.9, y2: 140.983 },
+          { x1: 431.731, y1: 2.678, x2: 18.224, y2: 150.659 },
+          { x1: 467.268, y1: 5.045, x2: 49.84, y2: 159.474 },
+          { x1: 499.381, y1: 16.694, x2: 95.744, y2: 177.019 },
+          { x1: 507.447, y1: 24.034, x2: 78.124, y2: 193.701 },
+          { x1: 518.702, y1: 41.078, x2: 167.659, y2: 181.762 },
+          { x1: 452.627, y1: 64.335, x2: 96.676, y2: 206.722 },
+          { x1: 424.975, y1: 24.079, x2: 69.024, y2: 166.466 },
+          { x1: 488.977, y1: 13.54, x2: 95.5, y2: 169.118 },
+        ];
+
+        let W = container.offsetWidth;
+        let H = container.offsetHeight;
+        const scene = new THREE.Scene();
+        const camera = new THREE.OrthographicCamera(0, W, 0, H, -1, 1);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(W, H);
+        renderer.domElement.style.position = 'absolute';
+        renderer.domElement.style.top = '0';
+        renderer.domElement.style.left = '0';
+        container.appendChild(renderer.domElement);
+
+        const svgToCanvas = (sx, sy) => ({ x: (sx / SVG_W) * W, y: (sy / SVG_H) * H });
+
+        const COUNT = 18, SPEED = 0.4, SIZE_MIN = 2.5, SIZE_MAX = 13;
+        const totalCount = COUNT * beams.length;
+        const positions = new Float32Array(totalCount * 3), colors = new Float32Array(totalCount * 3);
+        const alphas = new Float32Array(totalCount), sizes = new Float32Array(totalCount);
+        const state = [];
+
+        const resetParticle = (beamIdx, particleIdx, randomProgress) => {
+          const b = beams[beamIdx];
+          const p1 = svgToCanvas(b.x1, b.y1);
+          const p2 = svgToCanvas(b.x2, b.y2);
+          const dx = p2.x - p1.x, dy = p2.y - p1.y;
+          const len = Math.sqrt(dx * dx + dy * dy);
+          const nx = dx / len, ny = dy / len;
+          const scatter = (Math.random() - 0.5) * 3;
+          const t = randomProgress !== undefined ? randomProgress : Math.random();
+
+          return {
+            beamIdx,
+            x: p1.x + dx * t + -ny * scatter,
+            y: p1.y + dy * t + nx * scatter,
+            vx: nx * SPEED * (0.7 + Math.random() * 0.6),
+            vy: ny * SPEED * (0.7 + Math.random() * 0.6),
+            originX: p1.x,
+            originY: p1.y,
+            len,
+            t,
+            size: SIZE_MIN + Math.random() * (SIZE_MAX - SIZE_MIN),
+          };
+        };
+
+        for (let b = 0; b < beams.length; b++) {
+          for (let p = 0; p < COUNT; p++) {
+            state.push(resetParticle(b, p, Math.random()));
+          }
+        }
+
+        const geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        geo.setAttribute('alpha', new THREE.BufferAttribute(alphas, 1));
+        geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+        const mat = new THREE.ShaderMaterial({
+          uniforms: { map: { value: softBeamTex } },
+          vertexShader: `attribute float size; attribute vec3 color; attribute float alpha; varying vec3 vColor; varying float vAlpha; void main() { vColor = color; vAlpha = alpha; gl_PointSize = size; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+          fragmentShader: `uniform sampler2D map; varying vec3 vColor; varying float vAlpha; void main() { vec4 tex = texture2D(map, gl_PointCoord); if (tex.a < 0.04) discard; gl_FragColor = vec4(vColor, vAlpha) * tex; }`,
+          transparent: true,
+          depthWrite: false,
+        });
+
+        scene.add(new THREE.Points(geo, mat));
+
+        sceneUpdates.push(() => {
+          if (!container.isIntersecting) return;
+          for (let i = 0; i < state.length; i++) {
+            let s = state[i];
+            s.x += s.vx;
+            s.y += s.vy;
+            s.t = Math.sqrt((s.x - s.originX) * (s.x - s.originX) + (s.y - s.originY) * (s.y - s.originY)) / s.len;
+
+            if (s.t >= 1.0 || s.x < -10 || s.y > H + 10) {
+              state[i] = resetParticle(s.beamIdx, i, 0.0);
+              s = state[i];
+            }
+
+            positions[i * 3] = s.x;
+            positions[i * 3 + 1] = s.y;
+            positions[i * 3 + 2] = 0;
+
+            const t = Math.min(1, Math.max(0, s.t));
+            const colIdx = t < 0.09 ? 3 : t < 0.3 ? 2 : t < 0.75 ? 1 : 0;
+            const c = cachedBeamColors[colIdx];
+            colors[i * 3] = c.r;
+            colors[i * 3 + 1] = c.g;
+            colors[i * 3 + 2] = c.b;
+
+            alphas[i] = Math.min(1.0, t / 0.08) * Math.min(1.0, (1.0 - t) / 0.15) * 0.92;
+            sizes[i] = s.size * (0.4 + t * 0.6);
+          }
+
+          geo.attributes.position.needsUpdate = true;
+          geo.attributes.color.needsUpdate = true;
+          geo.attributes.alpha.needsUpdate = true;
+          geo.attributes.size.needsUpdate = true;
+          renderer.render(scene, camera);
+        });
+
+        resizeHandlers.push(() => {
+          W = container.offsetWidth;
+          H = container.offsetHeight;
+          camera.right = W;
+          camera.bottom = H;
+          camera.updateProjectionMatrix();
+          renderer.setSize(W, H);
+          for (let i = 0; i < state.length; i++) state[i] = resetParticle(state[i].beamIdx, i, Math.random());
+        });
+
+        viewportObserver.observe(container);
+      };
+
+      /* =========================================================================
+         EXECUTION TRIGGERS
+         ========================================================================= */
+      createParticleBG({ id: 'three-bg', fov: 70, count: 1000, speed: 0.012, resetZ: -200 });
+      createParticleBG({ id: 'three-bg-2', fov: 60, count: 1200, speed: 0.012, resetZ: -100 });
+      createParticleBG({ id: 'three-bg-3', fov: 50, count: 3500, speed: 0.012, resetZ: -100 });
+
+      initParticles('svg-particle-bg-1');
+      initParticles('svg-particle-bg-2');
+
+      initBeamParticles('svg-particle-bg-right');
+      initBeamParticles('svg-particle-bg-left');
+
+      const masterAnimationEngine = () => {
+        requestAnimationFrame(masterAnimationEngine);
+        sceneUpdates.forEach((update) => update());
+      };
+
+      if (sceneUpdates.length > 0) {
+        masterAnimationEngine();
+      }
+
+      // CRITICAL FORCED-REFLOW FIX: Tell ScrollTrigger that the layouts have altered due to injected 3D elements
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.refresh();
+      }
+      
+    }, 500); 
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const copyLinks = document.querySelectorAll(".copy-url");
+
+    copyLinks.forEach(link => {
+      link.addEventListener("click", function (e) {
+        e.preventDefault(); // Prevent default link behavior
+
+        const url = window.location.href;
+
+        // Copy to clipboard
+        navigator.clipboard.writeText(url)
+          .then(() => {
+            console.log("URL copied to clipboard:", url);
+            // Optionally show feedback
+            alert("URL copied!");
+          })
+          .catch(err => {
+            console.error("Failed to copy URL:", err);
+          });
+      });
+    });
+  });
+</script>
+</body></html>

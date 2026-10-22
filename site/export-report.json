@@ -1,0 +1,31 @@
+{
+  "source": "https://www.coditation.com/",
+  "generatedAt": "2026-10-22T15:33:11.971Z",
+  "publishedPagesExported": 224,
+  "downloadedAssets": 100,
+  "cmsCollections": 13,
+  "cmsItems": 519,
+  "cmsRoutes": 519,
+  "externalLinks": 190,
+  "externalLinksTruncated": false,
+  "webflowPageReconciliation": {
+    "total": 46,
+    "matchedPublishedHtml": 22,
+    "collectionTemplates": 12,
+    "drafts": 7,
+    "archived": 0,
+    "unmatched": 5
+  },
+  "limitations": [
+    "Browser rendering captures the initial page state and a bounded lazy-load scroll. Login-protected content, user-triggered states, and site-specific animation behavior are not reconstructed.",
+    "190 external page link(s) were left as links and recorded in external-links.json; external websites were not crawled.",
+    "6 CMS item(s) in \"Industry Categories\" have no matching published HTML page; their structured content and expected routes are in cms/routes.json.",
+    "9 CMS item(s) in \"Departments\" have no matching published HTML page; their structured content and expected routes are in cms/routes.json.",
+    "8 CMS item(s) in \"Business Outcomes\" have no matching published HTML page; their structured content and expected routes are in cms/routes.json.",
+    "13 CMS item(s) in \"Job Openings\" have no matching published HTML page; their structured content and expected routes are in cms/routes.json.",
+    "178 CMS item(s) in \"Use cases\" have no matching published HTML page; their structured content and expected routes are in cms/routes.json.",
+    "96 CMS item(s) in \"Employees Photos\" have no matching published HTML page; their structured content and expected routes are in cms/routes.json.",
+    "5 CMS item(s) in \"Insights\" have no matching published HTML page; their structured content and expected routes are in cms/routes.json.",
+    "5 Webflow page record(s) did not match a published HTML page; their API metadata is included separately in webflow/pages.json."
+  ]
+}

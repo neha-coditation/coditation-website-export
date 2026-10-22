@@ -1,0 +1,428 @@
+{
+  "source": "https://www.coditation.com/",
+  "generatedAt": "2026-10-22T15:33:11.974Z",
+  "pages": {
+    "exported": 224
+  },
+  "webflow": {
+    "siteId": "69e5ad295c1d96ac846056f7",
+    "collections": 13,
+    "cmsItems": 519,
+    "generatedCmsRoutes": 519
+  },
+  "limitations": [
+    "Browser rendering captures the initial page state and a bounded lazy-load scroll. Login-protected content, user-triggered states, and site-specific animation behavior are not reconstructed.",
+    "190 external page link(s) were left as links and recorded in external-links.json; external websites were not crawled.",
+    "6 CMS item(s) in \"Industry Categories\" have no matching published HTML page; their structured content and expected routes are in cms/routes.json.",
+    "9 CMS item(s) in \"Departments\" have no matching published HTML page; their structured content and expected routes are in cms/routes.json.",
+    "8 CMS item(s) in \"Business Outcomes\" have no matching published HTML page; their structured content and expected routes are in cms/routes.json.",
+    "13 CMS item(s) in \"Job Openings\" have no matching published HTML page; their structured content and expected routes are in cms/routes.json.",
+    "178 CMS item(s) in \"Use cases\" have no matching published HTML page; their structured content and expected routes are in cms/routes.json.",
+    "96 CMS item(s) in \"Employees Photos\" have no matching published HTML page; their structured content and expected routes are in cms/routes.json.",
+    "5 CMS item(s) in \"Insights\" have no matching published HTML page; their structured content and expected routes are in cms/routes.json.",
+    "5 Webflow page record(s) did not match a published HTML page; their API metadata is included separately in webflow/pages.json.",
+    "Asset limit reached (100); 2896 queued asset references were not attempted."
+  ],
+  "externalLinks": 190,
+  "externalLinksTruncated": false,
+  "webflowPageReconciliation": {
+    "total": 46,
+    "matchedPublishedHtml": 22,
+    "collectionTemplates": 12,
+    "drafts": 7,
+    "archived": 0,
+    "unmatched": 5,
+    "records": [
+      {
+        "id": "6acdf112ea3367c6ca0ba3e1",
+        "title": "Insights Template",
+        "slug": "detail_insights",
+        "publishedPath": "/insights",
+        "status": "collection-template-no-static-html",
+        "collectionId": "6acdf112ea3367c6ca0ba3db"
+      },
+      {
+        "id": "6acdf110951bcb76bedf1f07",
+        "title": "Insight",
+        "slug": "insight",
+        "publishedPath": "/insight",
+        "status": "draft",
+        "collectionId": null
+      },
+      {
+        "id": "6ac8a3609736375f3e9c6529",
+        "title": "IAM 2026 — Meet Coditation",
+        "slug": "iam-2026-meet-coditation",
+        "publishedPath": "/events/iam-2026-meet-coditation",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/events/iam-2026-meet-coditation"
+      },
+      {
+        "id": "6a637792564e5b29292980f5",
+        "title": "Rountable",
+        "slug": "rountable",
+        "publishedPath": "/rountable",
+        "status": "draft",
+        "collectionId": null
+      },
+      {
+        "id": "6a5ae2d066a1c6d0617c1dad",
+        "title": "Employees Photos Template",
+        "slug": "detail_employees-photos",
+        "publishedPath": "/employees-photos",
+        "status": "collection-template-no-static-html",
+        "collectionId": "6a5ae2d066a1c6d0617c1da7"
+      },
+      {
+        "id": "6a545f54fe09ac6b29164c78",
+        "title": "Gen AI Playbook",
+        "slug": "gen-ai-playbook",
+        "publishedPath": "/gen-ai-playbook",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/gen-ai-playbook"
+      },
+      {
+        "id": "6a52772abdbcc760ceee5273",
+        "title": "Use cases Template",
+        "slug": "detail_use-cases",
+        "publishedPath": "/use-cases",
+        "status": "collection-template-no-static-html",
+        "collectionId": "6a52772abdbcc760ceee526d"
+      },
+      {
+        "id": "6a4f2b0e2c3d9efa05a81f7b",
+        "title": "industries",
+        "slug": "static-template-slug-1783573254248",
+        "publishedPath": "/static-template-slug-1783573254248",
+        "status": "draft",
+        "collectionId": null
+      },
+      {
+        "id": "6a4a31b12d315efec134610e",
+        "title": "Landing PAge animation",
+        "slug": "landing-page-animation",
+        "publishedPath": "/landing-page-animation",
+        "status": "draft",
+        "collectionId": null
+      },
+      {
+        "id": "6a478e3b92ab9eb559463df0",
+        "title": "Job Openings Template",
+        "slug": "detail_job-openings",
+        "publishedPath": "/job-openings",
+        "status": "collection-template-no-static-html",
+        "collectionId": "6a478e3a92ab9eb559463ddb"
+      },
+      {
+        "id": "6a3cce2a767bbc0f05f161f1",
+        "title": "Components",
+        "slug": "components",
+        "publishedPath": "/components",
+        "status": "draft",
+        "collectionId": null
+      },
+      {
+        "id": "6a3bb71aadddfaf2f55c84bc",
+        "title": "Application Maintenance & Modernization",
+        "slug": "application-maintenance-modernization",
+        "publishedPath": "/capability/application-maintenance-modernization",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/capability/application-maintenance-modernization"
+      },
+      {
+        "id": "6a390553274bb2917bd22cae",
+        "title": "Business Outcomes Template",
+        "slug": "detail_business-outcomes",
+        "publishedPath": "/business-outcomes",
+        "status": "collection-template-no-static-html",
+        "collectionId": "6a390553274bb2917bd22ca0"
+      },
+      {
+        "id": "6a310f380674e94fa406a050",
+        "title": "Navbar",
+        "slug": "navbar",
+        "publishedPath": "/navbar",
+        "status": "draft",
+        "collectionId": null
+      },
+      {
+        "id": "6a2a8f8bdd76d9f9d31e095d",
+        "title": "Accelerators Template",
+        "slug": "detail_accelerators",
+        "publishedPath": "/accelerators",
+        "status": "collection-template-no-static-html",
+        "collectionId": "6a2a8f8bdd76d9f9d31e08f6"
+      },
+      {
+        "id": "6a2187cb3dbecd5cfa92e7b3",
+        "title": "Managed DevOps, SRE & Application Support",
+        "slug": "managed-devops-sre-application-support",
+        "publishedPath": "/capability/managed-devops-sre-application-support",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/capability/managed-devops-sre-application-support"
+      },
+      {
+        "id": "6a215e1b16ff3631ab6ed745",
+        "title": "Energy and Industrials",
+        "slug": "energy-and-industrials",
+        "publishedPath": "/industries/energy-and-industrials",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/industries/energy-and-industrials"
+      },
+      {
+        "id": "6a215dfc1720e4213e91c8a5",
+        "title": "Fintech",
+        "slug": "fintech",
+        "publishedPath": "/industries/fintech",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/industries/fintech"
+      },
+      {
+        "id": "6a215de067a678c15e845885",
+        "title": "Hi-tech",
+        "slug": "hi-tech",
+        "publishedPath": "/industries/hi-tech",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/industries/hi-tech"
+      },
+      {
+        "id": "6a1d5167ab324a0d2eb9634a",
+        "title": "Home",
+        "slug": null,
+        "publishedPath": "/",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/"
+      },
+      {
+        "id": "6a16ee13e26efe4dcc3960a4",
+        "title": "Data engineering",
+        "slug": "data-engineering",
+        "publishedPath": "/capability/data-engineering",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/capability/data-engineering"
+      },
+      {
+        "id": "6a16a96f9446ef84f536382c",
+        "title": "AI & Machine Learning",
+        "slug": "ai-machine-learning",
+        "publishedPath": "/capability/ai-machine-learning",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/capability/ai-machine-learning"
+      },
+      {
+        "id": "6a11885b08631aa448587d3e",
+        "title": "Privacy Policy",
+        "slug": "privacy-policy",
+        "publishedPath": "/privacy-policy",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/privacy-policy"
+      },
+      {
+        "id": "6a118434040c1ecee9b7b53f",
+        "title": "Terms and Condition",
+        "slug": "terms-conditions",
+        "publishedPath": "/terms-conditions",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/terms-conditions"
+      },
+      {
+        "id": "6a10300c992c5af0a35f6a35",
+        "title": "AI Lab",
+        "slug": "ai-lab",
+        "publishedPath": "/ai-lab",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/ai-lab"
+      },
+      {
+        "id": "6a102c2256176f297812e8a1",
+        "title": "Careers",
+        "slug": "careers",
+        "publishedPath": "/careers",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/careers"
+      },
+      {
+        "id": "6a0fee2465b9f2a589ca0232",
+        "title": "About",
+        "slug": "about",
+        "publishedPath": "/about",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/about"
+      },
+      {
+        "id": "6a03018ae8a06e57afcee402",
+        "title": "Case Studies",
+        "slug": "case-studies",
+        "publishedPath": "/case-studies",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/case-studies?8e1a39f6_page=2"
+      },
+      {
+        "id": "6a02ddb738d8e2b6e8ff7b4e",
+        "title": "Blogs Template",
+        "slug": "detail_blog",
+        "publishedPath": "/blog",
+        "status": "collection-template-no-static-html",
+        "collectionId": "6a02ddb638d8e2b6e8ff7b08"
+      },
+      {
+        "id": "6a02d3bea5393e67778cba1d",
+        "title": "Blogs",
+        "slug": "blogs",
+        "publishedPath": "/resources/blogs",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/resources/blogs?8e1a39f6_page=12"
+      },
+      {
+        "id": "6a01923382921afcd515988c",
+        "title": "Contact",
+        "slug": "contact",
+        "publishedPath": "/contact",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/contact"
+      },
+      {
+        "id": "69f890a8047078aab58666b3",
+        "title": "Logistics",
+        "slug": "logistics",
+        "publishedPath": "/industries/logistics",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/industries/logistics"
+      },
+      {
+        "id": "69f87877bab3aa23013a0453",
+        "title": "Digital Commerce",
+        "slug": "digital-commerce",
+        "publishedPath": "/industries/digital-commerce",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/industries/digital-commerce"
+      },
+      {
+        "id": "69f83668d504290f910f6a0d",
+        "title": "Departments Template",
+        "slug": "detail_department",
+        "publishedPath": "/department",
+        "status": "collection-template-no-static-html",
+        "collectionId": "69f83668d504290f910f6a07"
+      },
+      {
+        "id": "69f090a366ffc5727bbf772a",
+        "title": "Healthcare & Life Sciences",
+        "slug": "healthcare-life-sciences",
+        "publishedPath": "/industries/healthcare-life-sciences",
+        "status": "matched-published-path",
+        "collectionId": null,
+        "renderedUrl": "https://www.coditation.com/industries/healthcare-life-sciences"
+      },
+      {
+        "id": "69e88c46d6845e58b202d76f",
+        "title": "Industry Categories Template",
+        "slug": "detail_industry-categories",
+        "publishedPath": "/industry-categories",
+        "status": "collection-template-no-static-html",
+        "collectionId": "69e88c46d6845e58b202d768"
+      },
+      {
+        "id": "69e88bdf798339812888e2a5",
+        "title": "Case Studies Template",
+        "slug": "detail_case-studies",
+        "publishedPath": "/case-studies",
+        "status": "matched-published-path",
+        "collectionId": "69e88bdf798339812888e292",
+        "renderedUrl": "https://www.coditation.com/case-studies?8e1a39f6_page=2"
+      },
+      {
+        "id": "69e88b8225ca7c9122b1aef2",
+        "title": "Order Confirmation",
+        "slug": "order-confirmation",
+        "publishedPath": "/order-confirmation",
+        "status": "unmatched-published-path",
+        "collectionId": null
+      },
+      {
+        "id": "69e88b8225ca7c9122b1aee0",
+        "title": "Checkout (PayPal)",
+        "slug": "paypal-checkout",
+        "publishedPath": "/paypal-checkout",
+        "status": "unmatched-published-path",
+        "collectionId": null
+      },
+      {
+        "id": "69e88b8225ca7c9122b1aece",
+        "title": "Checkout",
+        "slug": "checkout",
+        "publishedPath": "/checkout",
+        "status": "unmatched-published-path",
+        "collectionId": null
+      },
+      {
+        "id": "69e88b8225ca7c9122b1ae8a",
+        "title": "Products Template",
+        "slug": "detail_product",
+        "publishedPath": "/product",
+        "status": "collection-template-no-static-html",
+        "collectionId": "69e88b8225ca7c9122b1ae61"
+      },
+      {
+        "id": "69e88b8225ca7c9122b1ae7f",
+        "title": "Categories Template",
+        "slug": "detail_category",
+        "publishedPath": "/category",
+        "status": "collection-template-no-static-html",
+        "collectionId": "69e88b8225ca7c9122b1ae60"
+      },
+      {
+        "id": "69e88b8225ca7c9122b1ae72",
+        "title": "SKUs Template",
+        "slug": "detail_sku",
+        "publishedPath": "/sku",
+        "status": "collection-template-no-static-html",
+        "collectionId": "69e88b8225ca7c9122b1ae64"
+      },
+      {
+        "id": "69e5ad2a5c1d96ac8460574b",
+        "title": "404",
+        "slug": "404",
+        "publishedPath": "/404",
+        "status": "unmatched-published-path",
+        "collectionId": null
+      },
+      {
+        "id": "69e5ad2a5c1d96ac8460574a",
+        "title": "Password",
+        "slug": "401",
+        "publishedPath": "/401",
+        "status": "unmatched-published-path",
+        "collectionId": null
+      },
+      {
+        "id": "69e5ad2a5c1d96ac8460574c",
+        "title": "Style Guide",
+        "slug": "style-guide",
+        "publishedPath": "/style-guide",
+        "status": "draft",
+        "collectionId": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,641 @@
+<!DOCTYPE html><!-- This site was created in Webflow. https://webflow.com --><!-- Last Published: Wed Oct 21 2026 11:40:36 GMT+0000 (Coordinated Universal Time) --><html data-wf-domain="www.coditation.com" data-wf-page="6a02ddb738d8e2b6e8ff7b4e" data-wf-site="69e5ad295c1d96ac846056f7" lang="en" data-wf-collection="6a02ddb638d8e2b6e8ff7b08" data-wf-item-slug="async-programming-in-dart-js"><head><meta charset="utf-8"/><link href="https://cdn.prod.website-files.com" rel="preconnect" crossorigin="anonymous"/><title>Async programming in Dart &amp; JS</title><meta content="This blog post provides an overview of asynchronous programming, focusing on the concepts and techniques used in Dart and JavaScript. The blog further compares and contrasts asynchronous programming in Dart and JavaScript, discussing their similarities and differences." name="description"/><meta content="Async programming in Dart &amp; JS" property="og:title"/><meta content="This blog post provides an overview of asynchronous programming, focusing on the concepts and techniques used in Dart and JavaScript. The blog further compares and contrasts asynchronous programming in Dart and JavaScript, discussing their similarities and differences." property="og:description"/><meta content="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61aec983ca9b05b0727c3f_async-programming-in-dart-js.avif" property="og:image"/><meta content="Async programming in Dart &amp; JS" name="twitter:title"/><meta content="This blog post provides an overview of asynchronous programming, focusing on the concepts and techniques used in Dart and JavaScript. The blog further compares and contrasts asynchronous programming in Dart and JavaScript, discussing their similarities and differences." name="twitter:description"/><meta content="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61aec983ca9b05b0727c3f_async-programming-in-dart-js.avif" name="twitter:image"/><meta property="og:type" content="website"/><meta content="summary_large_image" name="twitter:card"/><meta content="width=device-width, initial-scale=1" name="viewport"/><meta content="google-site-verification=jpjtMdhG-qTDK7aexC4aoo0LHWaHMmy8hT9TASrBzzA" name="google-site-verification"/><meta content="Webflow" name="generator"/><link href="../assets/asset-001.css" rel="stylesheet" type="text/css" integrity="sha384-ic8jXNYyzNvWMWMi6Nca6QUB4q5QtVOy8PwQXg4CnR9J0w4HEWnDS7+nVJWDR8CO" crossorigin="anonymous"/><link href="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/css/dev-coditation.webflow.6a02ddb738d8e2b6e8ff7b4e.84492e9e3.opt.min.css" rel="stylesheet" type="text/css" integrity="sha384-hEkunj3sUvulF7rtLpJrdXF1GwSc29dp3kcJWOW8hNtYWg1Ddkx7m0BUFHZnDTex" crossorigin="anonymous"/><script type="text/javascript">!function(o,c){var n=c.documentElement,t=" w-mod-";n.className+=t+"js",("ontouchstart"in o||o.DocumentTouch&&c instanceof DocumentTouch)&&(n.className+=t+"touch")}(window,document);</script><link href="../assets/asset-003.png" rel="icon" type="image/png" sizes="32x32" media="(prefers-color-scheme: light)"/><link href="../assets/asset-003.png" rel="icon" type="image/png" sizes="32x32" media="(prefers-color-scheme: dark)"/><link href="../assets/asset-004.png" rel="icon" type="image/png" sizes="48x48"/><link href="../assets/asset-005.png" rel="apple-touch-icon" sizes="180x180"/><link href="../assets/asset-006.png" rel="icon" type="image/png" sizes="192x192"/><link href="../assets/asset-007.png" rel="icon" type="image/png" sizes="512x512"/><link href="https://www.coditation.com/blog/async-programming-in-dart-js" rel="canonical"/><script>(function(w,i,g){w[g]=w[g]||[];if(typeof w[g].push=='function')w[g].push.apply(w[g],Array.isArray(i)?i:[i]);})(window,['G-VDY5FXGKKX'],'google_tags_first_party');</script><script async="" src="../assets/asset-008.js"></script><script type="text/javascript">window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('set', 'developer_id.dZGVlNj', true);gtag('set', 'developer_id.dYWYxNW', true);gtag('js', new Date());gtag('config', 'G-VDY5FXGKKX');</script><script src="../assets/asset-009.js" type="text/javascript"></script><script src="../assets/asset-010.js"></script>
+
+<meta name="google-site-verification" content="o2AfcNsnyb_YRPO2dKf5JIR3APJSrKjjKhbtHUShsIE" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5882L9N');</script>
+<!-- End Google Tag Manager -->
+<script src="../assets/asset-011.js" data-key="n7+dhZSiZTcRE5A7Mmop0g" async></script>
+<style>
+.ec-holder {
+    background: #FFFFFF !important;
+  font-size: 16px;
+    color: #060910 !important;
+    border: 1px solid rgba(0,0,0,0.08) !important;
+    border-radius: 4px !important;
+
+    backdrop-filter: blur(20px) !important;
+    padding: 1.5rem !important;
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+
+.ec-holder * {
+    color: #060910 !important;
+}
+
+
+.ec-holder button {
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+}
+
+#ecSubmitButton {
+    background: #3064FE !important;
+    padding: 8px 7px!important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 4px !important;
+    font-weight: 600 !important;
+}
+#ecShowMore{
+  
+    background: transparent !important;
+    color: #060910 !important;
+    padding: 8px 7px;
+    border: 1px solid rgba(0,0,0,0.12) !important;
+    border-radius: 4px !important;
+}
+
+
+
+<style>
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -o-font-smoothing: antialiased;
+  }
+
+  /* Combined Truncation Classes */
+  .truncate-2-lines,
+  .card-heading {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+ 
+
+ 
+
+  img, video, canvas {
+    overflow: clip; /* or overflow: hidden; */
+  }
+
+<link rel="preload">
+</style>
+
+<script defer src="../assets/asset-012.js"></script>
+<script defer src="../assets/asset-013.js"></script>
+
+
+
+
+<style>
+  .truncate-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+  .truncate-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+</style>
+<!-- Finsweet Attributes -->
+<script async type="module"
+src="https://cdn.jsdelivr.net/npm/@finsweet/attributes@2/attributes.js"
+fs-toc
+></script><script type="text/javascript">window.__WEBFLOW_CURRENCY_SETTINGS = {"currencyCode":"USD","symbol":"$","decimal":".","fractionDigits":2,"group":",","template":"{{wf {\"path\":\"symbol\",\"type\":\"PlainText\"} }} {{wf {\"path\":\"amount\",\"type\":\"CommercePrice\"} }} {{wf {\"path\":\"currencyCode\",\"type\":\"PlainText\"} }}","hideDecimalForWholeNumbers":false};</script></head><body><div class="page-wrapper"><div data-animation="default" class="navbar-wrapper w-nav" data-wf--navbar--variant="base" data-easing2="ease" data-easing="ease" data-collapse="medium" data-w-id="d8456cdd-8393-b586-48ab-c0955c7e989e" role="banner" data-duration="400"><div role="region" aria-label="Announcement" class="cd-announcement-bar"><div class="text-block-3"><strong>Meet Coditation at IAM 2026</strong> | Oct 21–24 · San Diego · <strong>Booth 703 ·</strong> <br/></div><a href="../events/iam-2026-meet-coditation.html" class="button tertiary-2 small w-inline-block"><div>Join us!</div><div class="button_arrow_wrapper tertiary-3"><img src="../assets/asset-016.svg" loading="eager" alt="" class="button_arrow tertiary-4"/><img src="../assets/asset-017.svg" loading="lazy" alt="" class="button_arrow tertiary-4 light-mode tertiary-5"/><img src="../assets/asset-018.svg" loading="lazy" alt="" class="button_arrow tertiary-4 dark-mode tertiary-6"/></div></a></div><div class="navbar"><div class="nabar_padding"><a href="../index.html" aria-label="Coditation - Home" class="nav-logo-wp w-inline-block"><img loading="eager" src="../assets/asset-019.svg" alt="coditation logo" class="nav-logo"/></a><nav role="navigation" class="nav-menu w-nav-menu"><div class="navbar-link-wp"><div data-delay="0" data-hover="true" class="dp-navbar-link w-dropdown"><div aria-controls="w-dropdown-list" class="nav-dp-toggle w-dropdown-toggle"><div>Industries</div><div class="nav-arrow-wp"><img loading="lazy" src="../assets/asset-020.svg" alt="" class="image-100 nav-close_state"/><img loading="lazy" src="../assets/asset-021.svg" alt="" class="image-100 nav-open_state"/></div></div><nav class="dp-mega-menu w-dropdown-list"><div class="padding-global nav"><div class="container-large"><div class="nav_megamenu"><div class="nav-2-dd-features-sublinks-wp"><a href="../industries/healthcare-life-sciences.html" aria-label="Healthcare and Life Science" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20" fill="currentColor"><path d="M6.5 11H4V8H6.5V5.5H9.5V8H12V11H9.5V13.5H6.5V11ZM8 0L0 3V9.09C0 14.14 3.41 18.85 8 20C12.59 18.85 16 14.14 16 9.09V3L8 0Z" stroke-linejoin="round"></path></svg><div class="paragraph-2">Healthcare &amp; Life Science</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Real-time data to improve care and compliance</div></div></div></a><a href="../industries/logistics.html" aria-label="Logistics" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M20 8H17V4H1V17H3C3 18.66 4.34 20 6 20C7.66 20 9 18.66 9 17H15C15 18.66 16.34 20 18 20C19.66 20 21 18.66 21 17H23V12L20 8ZM6 18C5.45 18 5 17.55 5 17C5 16.45 5.45 16 6 16C6.55 16 7 16.45 7 17C7 17.55 6.55 18 6 18ZM19.5 9.5L21.46 12H17V9.5H19.5ZM18 18C17.45 18 17 17.55 17 17C17 16.45 17.45 16 18 16C18.55 16 19 16.45 19 17C19 17.55 18.55 18 18 18Z" clip-path="url(#clip0_6363_5958)"></path></svg><div class="paragraph-2">Logistics</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">End-to-end visibility across fleets, assets, and operations</div></div></div></a><a href="../industries/hi-tech.html" aria-label="HighTech" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" clip-path=""><path d="M15 9H9V15H15V9ZM13 13H11V11H13V13ZM21 11V9H19V5H15V3H13V5H11V3H9V5H5V9H3V11H5V13H3V15H5V19H9V21H11V19H13V21H15V19H19V15H21V13H19V11H21ZM17 17H7V7H17V17Z" stroke-linejoin="round"></path></svg><div class="paragraph-2">HighTech</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Scalable platforms for connected products and systems</div></div></div></a><a href="../industries/fintech.html" aria-label="Fintech" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" clip-path="url(#clip0_6363_5977)"><path d="M4 10V17H7V10H4ZM10 10V17H13V10H10ZM2 22H21V19H2V22ZM16 10V17H19V10H16ZM11.5 1L2 6V8H21V6L11.5 1Z" stroke-linejoin="round"></path></svg><div class="paragraph-2">Fintech</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Secure, compliant systems for modern financial operations</div></div></div></a><a href="../industries/digital-commerce.html" aria-label="Digital Commerce" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" clip-path="url(#clip0_6363_5986)"><path d="M17 18C15.9 18 15.01 18.9 15.01 20C15.01 21.1 15.9 22 17 22C18.1 22 19 21.1 19 20C19 18.9 18.1 18 17 18ZM7 18C5.9 18 5.01 18.9 5.01 20C5.01 21.1 5.9 22 7 22C8.1 22 9 21.1 9 20C9 18.9 8.1 18 7 18ZM7 15L8.1 13H15.55C16.3 13 16.96 12.59 17.3 11.97L21.7 4H5.21L4.27 2H1V4H3L6.6 11.59L3.62 17H19V15H7Z" stroke-linejoin="round"></path></svg><div class="paragraph-2">Digital Commerce</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Seamless, scalable experiences across digital storefronts</div></div></div></a><a href="../industries/energy-and-industrials.html" aria-label="Energy and Industrials" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M11.0002 21H10.0002L11.0002 14H6.74023C6.74023 14 10.4202 7.54 13.0002 3H14.0002L13.0002 10H17.2802L11.0002 21Z" stroke-linejoin="round"></path></svg><div class="paragraph-2">Energy &amp; Industrials</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Intelligent monitoring and control for critical infrastructure</div></div></div></a></div><div class="featured-wp"><div class="div-block-249"><div class="paragraph-2">Gen AI: Playbook</div><div class="nav_btn_ter_wp"><a data-wf--button-with-arrow--variant="tertiary" href="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a5909c93e6f1ce2b8949003_Gen_ai_playbook_medium_quality.pdf" target="_blank" class="button w-variant-048a5caf-c188-5d8b-afbb-1aa26db7211c w-inline-block"><div>Download</div><div class="button_arrow_wrapper"><img src="../assets/asset-016.svg" loading="eager" alt="" class="button_arrow"/><img src="../assets/asset-017.svg" loading="lazy" alt="" class="button_arrow light-mode"/><img src="../assets/asset-018.svg" loading="lazy" alt="" class="button_arrow dark-mode"/></div></a></div></div><div class="gen_ai_play_book_wrapper nav"><img src="../assets/asset-022.avif" loading="lazy" sizes="100vw" srcset="../assets/asset-023.avif 500w, ../assets/asset-024.avif 800w, ../assets/asset-025.avif 1080w, ../assets/asset-022.avif 1180w" alt="Generative AI playbook" class="gen_ai_playbook_1 box-shadow"/><img src="../assets/asset-022.avif" loading="lazy" sizes="100vw" srcset="../assets/asset-023.avif 500w, ../assets/asset-024.avif 800w, ../assets/asset-025.avif 1080w, ../assets/asset-022.avif 1180w" alt="Generative AI playbook" class="gen_ai_playbook_2 box-shadow"/></div><div class="space-24"></div></div><div class="bg-nav"></div></div></div></div></nav></div><a href="../case-studies.html" aria-label="Blogs" class="nav-dp-toggle w-inline-block"><div>Case Studies</div></a><div data-delay="0" data-hover="true" class="dp-navbar-link w-dropdown"><div class="nav-dp-toggle w-dropdown-toggle"><div>Capabilities</div><div class="nav-arrow-wp"><img loading="lazy" src="../assets/asset-020.svg" alt="" class="image-100 nav-close_state"/><img loading="lazy" src="../assets/asset-021.svg" alt="" class="image-100 nav-open_state"/></div></div><nav class="dp-mega-menu w-dropdown-list"><div class="padding-global nav"><div class="container-large"><div class="nav_megamenu"><div class="nav-2-dd-features-sublinks-wp"><a href="../capability/ai-machine-learning.html" aria-label="AI and Machine Learning" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><div class="nav-link_icon_wrapper"><img width="Auto" loading="lazy" alt="AI capability" src="../assets/asset-026.svg" class="image-100"/></div><div class="paragraph-2">AI &amp; Machine Learning</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">AI for better business outcomes.</div></div></div></a><a href="../capability/data-engineering.html" aria-label="Data Engineering" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><div class="nav-link_icon_wrapper"><img width="Auto" loading="lazy" alt="account tree icon" src="../assets/asset-027.svg" class="image-100"/></div><div class="paragraph-2">Data Engineering</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Build data foundations for scale.</div></div></div></a><a href="../capability/managed-devops-sre-application-support.html" aria-label="Managed DevOps, SRE &amp; Application Support" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><div class="nav-link_icon_wrapper"><img width="Auto" loading="lazy" alt="settings suggest icon" src="../assets/asset-028.svg" class="image-100"/></div><div class="paragraph-2">Managed DevOps, SRE &amp; Application Support</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Performance, reliability, and operational resilience.</div></div></div></a><a href="../capability/application-maintenance-modernization.html" aria-label="Application Maintenance &amp; Modernization" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><div class="nav-link_icon_wrapper"><img width="Auto" loading="lazy" alt="autorenew icon" src="../assets/asset-029.svg" class="image-100"/></div><div class="paragraph-2">Application Maintenance &amp; Modernization</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Keep systems current and future-ready.</div></div></div></a></div><div class="featured-wp"><div class="div-block-249"><div class="paragraph-2">Gen AI: Playbook</div><div class="nav_btn_ter_wp"><a data-wf--button-with-arrow--variant="tertiary" href="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a5909c93e6f1ce2b8949003_Gen_ai_playbook_medium_quality.pdf" target="_blank" class="button w-variant-048a5caf-c188-5d8b-afbb-1aa26db7211c w-inline-block"><div>Download</div><div class="button_arrow_wrapper"><img src="../assets/asset-016.svg" loading="eager" alt="" class="button_arrow"/><img src="../assets/asset-017.svg" loading="lazy" alt="" class="button_arrow light-mode"/><img src="../assets/asset-018.svg" loading="lazy" alt="" class="button_arrow dark-mode"/></div></a></div></div><div class="gen_ai_play_book_wrapper nav"><img src="../assets/asset-022.avif" loading="lazy" sizes="100vw" srcset="../assets/asset-023.avif 500w, ../assets/asset-024.avif 800w, ../assets/asset-025.avif 1080w, ../assets/asset-022.avif 1180w" alt="Generative AI playbook" class="gen_ai_playbook_1 box-shadow"/><img src="../assets/asset-022.avif" loading="lazy" sizes="100vw" srcset="../assets/asset-023.avif 500w, ../assets/asset-024.avif 800w, ../assets/asset-025.avif 1080w, ../assets/asset-022.avif 1180w" alt="Generative AI playbook" class="gen_ai_playbook_2 box-shadow"/></div><div class="space-24"></div></div><div class="bg-nav"></div></div></div></div></nav></div><div data-delay="0" data-hover="true" class="dp-navbar-link w-dropdown"><div class="nav-dp-toggle w-dropdown-toggle"><div>Company</div><div class="nav-arrow-wp"><img loading="lazy" src="../assets/asset-020.svg" alt="" class="image-100 nav-close_state"/><img loading="lazy" src="../assets/asset-021.svg" alt="" class="image-100 nav-open_state"/></div></div><nav class="dp-mega-menu w-dropdown-list"><div class="padding-global nav"><div class="container-large"><div class="nav_megamenu"><div class="nav-2-dd-features-sublinks-wp"><a href="../about.html" aria-label="AI and Machine Learning" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><div class="nav-link_icon_wrapper"><img width="Auto" loading="lazy" alt="groups icon" src="../assets/asset-030.svg" class="image-100"/></div><div class="paragraph-2">About</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Where innovation, integrity, and product thinking meet.</div></div></div></a><a href="../careers.html" aria-label="Data Engineering" class="nav-2-dd-links-wp w-inline-block"><div class="nav-2-dd-link-content-wp"><div class="nav-2-link-label"><div class="nav-link_icon_wrapper"><img width="Auto" loading="lazy" alt="badge icon" src="../assets/asset-031.svg" class="image-100"/></div><div class="paragraph-2">Careers</div></div><div class="nav-description-card"><div class="nav-2-dd-subtext">Grow your career with cutting edge technology projects.</div></div></div></a></div><div class="featured-wp"><div class="div-block-249"><div class="paragraph-2">Gen AI: Playbook</div><div class="nav_btn_ter_wp"><a data-wf--button-with-arrow--variant="tertiary" href="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a5909c93e6f1ce2b8949003_Gen_ai_playbook_medium_quality.pdf" target="_blank" class="button w-variant-048a5caf-c188-5d8b-afbb-1aa26db7211c w-inline-block"><div>Download</div><div class="button_arrow_wrapper"><img src="../assets/asset-016.svg" loading="eager" alt="" class="button_arrow"/><img src="../assets/asset-017.svg" loading="lazy" alt="" class="button_arrow light-mode"/><img src="../assets/asset-018.svg" loading="lazy" alt="" class="button_arrow dark-mode"/></div></a></div></div><div class="gen_ai_play_book_wrapper nav"><img src="../assets/asset-022.avif" loading="lazy" sizes="100vw" srcset="../assets/asset-023.avif 500w, ../assets/asset-024.avif 800w, ../assets/asset-025.avif 1080w, ../assets/asset-022.avif 1180w" alt="Generative AI playbook" class="gen_ai_playbook_1 box-shadow"/><img src="../assets/asset-022.avif" loading="lazy" sizes="100vw" srcset="../assets/asset-023.avif 500w, ../assets/asset-024.avif 800w, ../assets/asset-025.avif 1080w, ../assets/asset-022.avif 1180w" alt="Generative AI playbook" class="gen_ai_playbook_2 box-shadow"/></div><div class="space-24"></div></div><div class="bg-nav"></div></div></div></div></nav></div><a href="../resources/blogs.html" aria-label="Blogs" class="nav-dp-toggle w-inline-block"><div>Blogs</div></a><a href="../ai-lab.html" aria-label="Blogs" class="nav-dp-toggle nav_ai_lab_btn w-inline-block"><div class="button_arrow_wrapper"><img src="../assets/asset-032.svg" loading="eager" alt="" class="button_arrow"/></div><div>AI Lab</div><img src="../assets/asset-033.svg" loading="lazy" alt="" class="ai_btn_particals"/><img src="../assets/asset-034.svg" loading="lazy" alt="" class="ai_btn_border"/></a><div class="nav_btn"><a data-wf--button-with-arrow--variant="navbar" href="../contact.html" class="button w-variant-4a9d35e3-62df-3ed2-5d5b-7b8d0c01e64c w-inline-block"><div>Get In Touch</div><div class="button_arrow_wrapper"><img src="../assets/asset-016.svg" loading="eager" alt="" class="button_arrow"/><img src="../assets/asset-017.svg" loading="lazy" alt="" class="button_arrow light-mode"/><img src="../assets/asset-018.svg" loading="lazy" alt="" class="button_arrow dark-mode"/></div></a></div></div></nav><div class="nav-btn-main-wp"><a aria-label="Contact Coditation" data-wf--button-with-arrow--variant="navbar" href="../contact.html" class="button w-variant-4a9d35e3-62df-3ed2-5d5b-7b8d0c01e64c w-inline-block"><div>Get In Touch</div><div class="button_arrow_wrapper"><img src="../assets/asset-016.svg" loading="eager" alt="" class="button_arrow"/><img src="../assets/asset-017.svg" loading="lazy" alt="" class="button_arrow light-mode"/><img src="../assets/asset-018.svg" loading="lazy" alt="" class="button_arrow dark-mode"/></div></a></div><div class="menu-button w-nav-button"><div class="ham_wrapper"><div class="ham_line1"></div><div class="ham_line2"></div><div class="ham_line3"></div></div></div></div></div><div class="code-block w-embed w-script"><style>
+/* Locks the body from scrolling when any dropdown is open */
+body.no-scroll {
+  overflow: hidden !important;
+  height: 100vh !important;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  // Use querySelectorAll to find BOTH dropdown toggles
+  const dropdownToggles = document.querySelectorAll(".nav-dp-toggle");
+
+  if (dropdownToggles.length > 0) {
+    
+    // Create the observer instance
+    const observer = new MutationObserver(function (mutations) {
+      mutations.forEach(function (mutation) {
+        if (mutation.attributeName === "class") {
+          
+          // Loop through all toggles to see if ANY of them are open right now
+          let isAnyOpen = false;
+          dropdownToggles.forEach(function (toggle) {
+            if (toggle.classList.contains("w--open")) {
+              isAnyOpen = true;
+            }
+          });
+
+          // Apply or remove the scroll lock class based on the global state
+          if (isAnyOpen) {
+            document.body.classList.add("no-scroll");
+          } else {
+            document.body.classList.remove("no-scroll");
+          }
+        }
+      });
+    });
+
+    // CRITICAL: Loop through each toggle and attach the observer to both
+    dropdownToggles.forEach(function (toggle) {
+      observer.observe(toggle, { attributes: true });
+    });
+  }
+});
+</script></div><div class="nav_background_overlay"></div></div><div class="main-wrapper"><div class="section-wrapper"><section class="section"><div class="padding-global padding-section-medium hero_section"><div class="blogs_hero_wrapper"><h1>Async programming in Dart &amp; JS</h1><div class="space-12"></div><p class="paragraph-3 max-width-large">This blog post provides an overview of asynchronous programming, focusing on the concepts and techniques used in Dart and JavaScript. The blog further compares and contrasts asynchronous programming in Dart and JavaScript, discussing their similarities and differences.</p></div></div><div class="background-wrapper"><img src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a058f82c005f272b5a7e9c7_blog%20hero%20bg.svg" loading="lazy" alt="" class="image-100"/></div></section></div><section class="section white-bg"><div class="padding-global padding-section-medium"><div class="highlight-content-wp"><div class="more-articles-wp"><div class="table-of-contents-wp"><div class="paragraph-3 text-weight-semibold">IN THIS ARTICLE</div><div class="space-24"></div><div class="toc-link-wp"><a href="async-programming-in-dart-js.html" class="fs-toc-link w-inline-block"><div fs-toc-element="link">This is some text inside of a div block.</div></a></div></div><div class="share-link"><div class="paragraph-2 text-weight-semibold">Share</div><div class="share-social-icons"><a aria-label="Share on LinkedIn" href="async-programming-in-dart-js.html" class="social-share-btn lnk w-inline-block"></a><a href="async-programming-in-dart-js.html" class="social-share-btn twitter w-inline-block"></a></div><div class="share_block"><div class="html-embed w-embed"><a
+  class="w-inline-block social-share-btn lnk"
+  href="http://www.linkedin.com/shareArticle?mini=true&url=&title=&summary=&source="
+  target="_blank"
+  title="Share on LinkedIn"
+  onclick="
+    window.open('http://www.linkedin.com/shareArticle?mini=true&url=' + encodeURIComponent(document.URL) + '&title=' + encodeURIComponent(document.title));
+    return false;
+  "
+></a></div><div aria-label="share on tweeter" class="html-embed center w-embed"><a
+  class="w-inline-block social-share-btn twitter"
+  href="http://www.linkedin.com/shareArticle?mini=true&url=&title=&summary=&source="
+   href="https://x.com/intent/tweet?url=&text=" 
+   target="_blank" 
+   title="Share on X" 
+   onclick="window.open('https://x.com/intent/tweet?url=' + encodeURIComponent(document.URL) + '&text=' + encodeURIComponent(document.title)); return false;">
+</a></div><a id="copy-article-wp" aria-label="copy link" href="async-programming-in-dart-js.html" class="copy-url w-inline-block"><img src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a5899f1cb1fce3404093de6_share.svg" loading="lazy" alt="share Icon" class="image-100"/></a></div></div></div><div class="blog_content_wrapper"><div fs-toc-element="contents" class="blog_rt w-richtext"><h2>Asynchronous Programming:</h2><p>Asynchronous programming is a technique that enables your program to start a potentially long-running task and still be able to be responsive to other events while that task runs, rather than having to wait until that task has finished. Once that task has finished, your program is presented with the result.</p><p>‍<br/>An <em>asynchronous</em> model allows multiple things to happen at the same time. When you start an action, your program continues to run. When the action finishes, the program is informed and gets access to the result (for example, the data read from disk or api call).<br/>Computers are asynchronous by design</p><h2>Asynchronous Programming In Dart</h2><p>Dart futures run on the event loop, which manages the event queue. As Dart is a single-threaded program just like JS, all the tasks you write end up in the event loop for execution.</p><p>‍</p><p>Asynchronous operations in Dart can be achieved in two ways:</p><ol role="list"><li>Using await and async</li><li>Using Future API.</li></ol><h3>Future:</h3><p>One of the basic implementations of asynchronous coding patterns in Dart is Future. If you are already familiar with JavaScript, Future has the exact same concept with Promise.</p><p>‍<br/>Instead of blocking all computation until the result is available, the asynchronous computation immediately returns a Future which will <em>eventually</em> &quot;complete&quot; with the result.</p><h4><strong>So a future can be in one of 3 states:</strong></h4><ol role="list"><li>Uncompleted: The uncompleted future is waiting for the function’s asynchronous activity to complete or to throw a mistake.</li><li>Completed with a value: The completed Future (data) is ready</li><li>Completed with an error:  The completed Future with Error/Mistake data</li><li>The Future class has a few constructors:</li></ol><figure style="max-width:1040pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image"><div><img alt="" src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a02e02b2212c3a544d7e61d_649be768d6160f417e848609_X80zrOyS0Ohc4djL9SJf_xx9leerKphbMDmsjR7fLr1-3VvrRM3q9-qzxupEenqjzZ959cbGpmyQuu_o-rpysncMlWVf0vGy6qHlsgSx8_qbAcN5-7Lh4FqN6uelusyWoj4aleVNpFYWuqypoKj6fNc.avif" loading="lazy"/></div></figure><ul role="list"><li>Future.any(): </li></ul><p>Returns the result of the first future in [futures] to complete.</p><p>‍<br/>It takes the list of futures and return the result of the first future in the futures list to report that it is complete</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span>Future any(Iterable&gt; futures) 
+</span></span><span><span></span><span class="hljs-attr">Type</span><span>: Future </span><span style="color:#f5ab35">Function</span><span>(Iterable&gt;)</span></span></code></pre><p>The returned future is completed with the result of the first future in [futures] to report that it is complete, whether it&#x27;s with a value or an error. The results of all the other futures are discarded.</p><p>‍<br/>If [futures] is empty, or if none of its futures complete, the returned future never completes.</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span>Future slowInt() </span><span style="color:#dcc6e0">async</span><span> { 
+</span></span><span><span> </span><span style="color:#dcc6e0">await</span><span> Future.delayed(</span><span style="color:#dcc6e0">const</span><span> Duration(seconds: </span><span style="color:#f5ab35">2</span><span>)); 
+</span></span><span><span> </span><span style="color:#dcc6e0">return</span><span> </span><span style="color:#f5ab35">2</span><span>; 
+</span></span><span>}
+</span><span>
+</span><span><span>Future delayedString() </span><span style="color:#dcc6e0">async</span><span> { 
+</span></span><span><span> </span><span style="color:#dcc6e0">await</span><span> Future.delayed(</span><span style="color:#dcc6e0">const</span><span> Duration(seconds: </span><span style="color:#f5ab35">4</span><span>)); 
+</span></span><span><span> </span><span style="color:#dcc6e0">throw</span><span> Exception(</span><span style="color:#abe338">&#x27;Time has passed&#x27;</span><span>); 
+</span></span><span>} 
+</span><span>
+</span><span><span>Future fastInt() </span><span style="color:#dcc6e0">async</span><span> { 
+</span></span><span><span> </span><span style="color:#dcc6e0">await</span><span> Future.delayed(</span><span style="color:#dcc6e0">const</span><span> Duration(seconds: </span><span style="color:#f5ab35">1</span><span>)); 
+</span></span><span><span> </span><span style="color:#dcc6e0">return</span><span> </span><span style="color:#f5ab35">3</span><span>; 
+</span></span><span>}
+</span><span>
+</span><span>
+</span><span><span></span><span style="color:#dcc6e0">void</span><span> main() </span><span style="color:#dcc6e0">async</span><span> {
+</span></span><span><span>final result = </span><span style="color:#dcc6e0">await</span><span> Future.any([slowInt(), delayedString(), fastInt()]);
+</span></span><span><span></span><span style="color:#d4d0ab">// The future of fastInt completes first, others are ignored.</span><span>
+</span></span><span><span> print(</span><span style="color:#abe338">&#x27;Result: $result&#x27;</span><span>); </span><span style="color:#d4d0ab">// 3 </span><span>
+</span></span><span>}
+</span><span>
+</span><span>
+</span><span>
+</span><span><span></span><span class="hljs-attr">Output</span><span>:
+</span></span><span><span>Result: </span><span style="color:#f5ab35">3</span><span>
+</span></span><span></span></code></pre><p>‍</p><ul role="list"><li><strong>Future.delayed(): </strong></li></ul><p>Creates a future that runs its computation after a delay.</p><p>‍<br/>The [computation] will be executed after the given [duration] has passed, and the future is completed with the result of the computation.</p><p>‍<br/>By default the return type of the delayed() is dynamic and If [computation] is omitted, it will be treated as if [computation] was () =&gt; null, and the future will eventually complete with the null value. In that case, [T] must be nullable.</p><p>‍</p><h3>Example: </h3><p>In this example Future will wait for 2 seconds then it will execute the computation part and message printed after 2 seconds of delay.</p><p>‍<br/>If the duration is 0 or less, it completes no sooner than in the next event-loop iteration, after all microtasks have run.</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span style="color:#dcc6e0">void</span><span> main() </span><span style="color:#dcc6e0">async</span><span> {
+</span></span><span><span>  Future.delayed(Duration(seconds: </span><span style="color:#f5ab35">2</span><span>), 
+</span></span><span>    () {
+</span><span><span>        print(</span><span style="color:#abe338">&#x27;This Message will print after 2 seconds&#x27;</span><span>)
+</span></span><span>     }
+</span><span>  )
+</span><span>}
+</span><span>
+</span><span>
+</span><span>
+</span><span><span></span><span class="hljs-attr">Output</span><span>:
+</span></span><span><span>This Message will print after </span><span style="color:#f5ab35">2</span><span> seconds
+</span></span><span></span></code></pre><p>If the duration is 0 or less, it completes no sooner than in the next event-loop iteration, after all microtasks have run.</p><p>‍<br/><strong>Note</strong>: Future will complete once you use async/await or .then(), it won’t complete without it<br/></p><h2>The Future API and callbacks</h2><p>Functions that use the Future API register callbacks that handle the value (or the error) that completes a Future.</p><p>‍</p><p>For example:</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span>myFunc().then(processValue).catchError(handleError);</span></span></code></pre><p><strong>‍</strong><br/></p><p>The registered callbacks fire based on the following rules: then()’s callback fires if it is invoked on a Future that completes with a value; catchError()’s callback fires if it is invoked on a Future that completes with an error.</p><p>‍</p><p>In the example above, if myFunc()’s Future completes with a value, then()’s callback fires. If no new error is produced within then(), catchError()’s callback does not fire. On the other hand, if myFunc() completes with an error, then()’s callback does not fire, and catchError()’s callback does.</p><figure style="max-width:1256pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image"><div><img alt="" src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a02e02b2212c3a544d7e61a_649be768e46ebc6622fb1d5e_4U7XCFnlW8cTULh63gb77SsiwRjoAfn20JteJt5qGC6vSZ8hz5kEQc0O0xYtyZg5w-NlffTHs0b4hHaUVLUeF8DxyMfVEJtAdlToGNOyOKHw05MCCHsMlTx4Q1JH2hgyqoBvOAQD-yz1QaGucacgPkQ.avif" loading="lazy"/></div></figure><p>‍</p><h3><strong>.then() : </strong></h3><p>‍</p><p>Register callbacks to be called when this future completes.</p><p>‍</p><h3><strong>.whenComplete() : </strong></h3><p>Registers a function to be called when this future completes.</p><p>‍</p><p><strong>The [action] function is called when this future completes, whether it does so with a value or with an error.</strong></p><p>‍</p><p>This is the asynchronous equivalent of a &quot;finally&quot; block.</p><h3><strong>.onError():</strong></h3><p>Handles errors emitted by this Future.</p><p>‍</p><p>This is the asynchronous equivalent of a &quot;catch&quot; block.</p><p>‍</p><p>Returns a new Future that will be completed with either the result of this future or the result of calling the onError callback.</p><h3><strong>Using Async/Await:</strong></h3><p>Most programming languages have async and await in their syntax. Basically, there is just an alternate syntax to handle asynchronous code like Future and Streams to make it looks cleaner and readable.</p><p>‍</p><p>The await and async keywords are used together. The function that is supposed to be doing the expensive work is marked with keyword async. Inside the function, the expensive call is prefixed by keyword await</p><p>‍</p><p>Let&#x27;s see in the following code snippet how async and await keywords are used. await can only be called in a function which is marked/declared as async. Future keyword before the function getLanguage() means that this function will be executing asynchronously and will be suspended when come across await.</p><figure style="max-width:1246pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image"><div><img alt="" src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a02e02b2212c3a544d7e626_649be768a7f56f80c8b9d243_fCYb1_XiW0Gy0ocBSMs8RzMQuLCs8vDRYO3iWFzuP9MRwT3hQqi33mZ3Rrtc78J3Tl7MJqLx4jUv_jWQn-PCFPvTKxjkz15O6ts6TQnl5kYyGKGsnZMrvVqmW6Rzda_uTmHLrpDEL4VtR8Ga1HW4DPQ.avif" loading="lazy"/></div></figure><h2><strong>Sequencing Function Calls</strong></h2><p>It&#x27;s possible to control the order of execution of asynchronous functions using sequencing with help of await and async. Let&#x27;s see how this is done in the example below. In this example, there are three functions getDataA(), getDataB(), and getDataC(). We want them to execute one after another. The await keyword does exactly that. It executes the function synchronously until it comes across await, and waits there for it to finish before executing the next line, in this case another await call.</p><figure style="max-width:1244pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image"><div><img alt="" src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a02e02c2212c3a544d7e636_649be769cf2f94ed229513cf_AgCe0tCuoYq73Fs66B2XB87_Y897w5vjohvei78rowLBSELxetATxdrTE4p_QRFiaa1C1ZgK_5SSlcH5yPu1XmP2dTbC_9ssZ-xgNvx27yEtJ31SDdPvTZk7o7fA13ityazhe4sCYxK1iXNQt8uoWU0.avif" loading="lazy"/></div></figure><h2><strong>Error Handling (Try/Catch Block)</strong></h2><p>Let’s see how to handle exceptions thrown in the long running asynchronous operations. When the await keyword is used, an asynchronous call behaves like a synchronous one. In such cases, error handling for asynchronous and synchronous code is handled in a similar way.</p><p>‍</p><p>The asynchronous call prefixed with await keyword is wrapped in a try/catch block. When an exception is thrown in the try block, the catch block executes its code.</p><figure style="max-width:1242pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image"><div><img alt="" src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a02e02b2212c3a544d7e623_649be7691ea0320a4fd26fd2_vFr_1PQUxGKqUr_sulZsuBoE7FcqJ6M8ibv_nTqUfOcCrktERlnRw2Yix77o9dp2VG7yq9yDIhMs7Mw2zDnua4O5NEen2wwmHX7YIo9-0P8qPOADGxMxeIegJpT2dvEMzO_Zl1_zvpcR69gXBvv_LZ0.avif" loading="lazy"/></div></figure><h2><strong>Asynchronous Programming in JavaScript: </strong></h2><p>In general JavaScript is running code in a non-blocking way. This means that code which is taking some time to finish (like accessing an API, reading content from the local file system etc.) is being executed in the background and in parallel the code execution is continued. This behavior is described by the term asynchronous programming. Because JavaScript is executed in that non-blocking way you have to take additional measures to deal with that code if you need to have the result available before further code is being executed.</p><p>‍<br/>Let’s take a look at the following first example to get a better understanding of the problem:</p><pre contenteditable="false" class="w-code-block" style="display:block;overflow-x:auto;background:#2b2b2b;color:#f8f8f2;padding:0.5em"><code class="language-javascript" style="white-space:pre-wrap"><span><span style="color:#dcc6e0">const</span><span> getUser = </span><span class="hljs-function">() =&gt;</span><span> {
+</span></span><span><span>  </span><span style="color:#f5ab35">setTimeout</span><span>(</span><span class="hljs-function">() =&gt;</span><span> {
+</span></span><span><span>   </span><span style="color:#dcc6e0">return</span><span> { </span><span class="hljs-attr">name</span><span>: </span><span style="color:#abe338">&#x27;John Doe&#x27;</span><span>, </span><span class="hljs-attr">age</span><span>: </span><span style="color:#f5ab35">25</span><span> }
+</span></span><span><span>  }, </span><span style="color:#f5ab35">5000</span><span>)
+</span></span><span>}
+</span><span><span></span><span style="color:#dcc6e0">const</span><span> user = getUser()
+</span></span><span><span></span><span style="color:#f5ab35">console</span><span>.log(user.name)
+</span></span><span></span></code></pre><figure style="max-width:1006pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image"><div><img alt="" src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a02e02a2212c3a544d7e60e_649be769386d144f4fbf9ef4_ZzC5G7MdJvpjA6-wDFCDE4rGjbWsfTDlV3g358V65l9SIOEm_lAZqsc4Ra5RFUqBgWlYx9L5h5JZdA2mFlpMwI2V1HRUR71PgcD5zAv5IX3akO1xhyv4QiPaqYan6aVHqD_WDcNS6qIoQv4iOUeEtQg.avif" loading="lazy"/></div></figure><p>Here we’re defining a function getUser. This function is returning a user data (as a JSON object with the string property <em>name and age</em>). To simulate an API call we’re delaying the response for 5 seconds by wrapping the return statement in an anonymous function which is passed to <em>setTimeout</em>. The second parameter of <em>setTimeout</em> is the amount of milliseconds for which the execution of the function should be delayed.</p><p>‍</p><p>The result of the getUser function call is stored in a constant named user and finally we’re trying to print out the <em>name</em> information by using a console.log call. This result in the following error when executing this code:</p><p>‍</p><p>So why are we getting this type of error stating that it cannot read property name of undefined. The reason is quite clear: as the return value of getUser() function is delivered with a delay of 5000 milliseconds the object is not available when trying to output user.name to the console. The code execution has continued without waiting for the call of getUser to be finished. This is a typical problem when dealing with asynchronous code executing. So what could be a solution to this problem? Fortunately JavaScript has many solutions to offer. First we’re going to take a look at Callbacks in the following section.</p><h2><strong>What are Callbacks in JavaScript?</strong></h2><p>A callback is a function that is passed inside another function, and then called in that function to perform a task.</p><p>‍</p><p>Let’s implement a callback to our previous example.</p><figure style="max-width:1230pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image"><div><img alt="" src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a02e02b2212c3a544d7e62d_649be769a7f56f80c8b9d2b3_EyIaaWOyQdEansbVzkDcmjIPDEj4YucflRFCPndk87mnSdXF0XUYVLL7BqhMQRnkfnj7lpqdZ5z9e_AjnzVR3LGWNyp1LElQq3UTiZYZvQPId-HKli5PMhUCWoxPAxQrq5ANEU8QrPaQ_G3dM04WVgw.avif" loading="lazy"/></div></figure><p>From the result you can learn that the last console.log statement is executed first. The reason is quite obvious. The second <em>console.log</em> statement is embedded in the callback function of <em>getUser</em>. The execution of this callback function is still delayed by 5000 milliseconds, so the output to the command line is delayed as well.</p><h3><strong>Alternatives to callbacks:</strong></h3><p>Starting with ES6, JavaScript introduced several features that help us with asynchronous code that do not involve using callbacks: Promises (ES6) and Async/Await (ES2017).</p><h3><strong>JavaScript  Promises:</strong></h3><p>Promises are used to handle asynchronous operations in JavaScript. They are easy to manage when dealing with multiple asynchronous operations where callbacks can create callback hell leading to unmanageable code.</p><p>‍</p><h3><strong>A Promise is in one of these states:</strong></h3><ul role="list"><li>pending: initial state, neither fulfilled nor rejected.</li><li>fulfilled: meaning that the operation was completed successfully.</li><li>rejected: meaning that the operation failed.</li><li>settled: Promise has been fulfilled or rejected.</li></ul><p>Promises came along to solve the problems of callback functions. A promise takes in two functions as parameters. That is, resolve and reject. <strong>Remember that resolve is success, and reject is for when an error occurs.	</strong></p><p>‍</p><figure style="max-width:1120pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image"><div><img alt="" src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a02e02c2212c3a544d7e64d_649be769e46ebc6622fb1e1f_ROvU2msYnFxjNBSNvG9pUE0IyU-55jVlpHCI318l0ggRXt_ClBFyqOmgYRqmixwk24ISqKYPnAGnxP_KxAC6ENEUN5KEOyOFRiFsXpiQkZNP4OLhuGms3LnHgnN7FlECBaCuIdYove_vBPP3lg-uj4A.avif" loading="lazy"/></div></figure><p>In the above example we have created a function named <em>canDriveCar</em> which accepts a parameter which is of type user and it returns the promise data.<br/>Inside the function we have returned a Promise and inside the promise we performed some computation and then returned the resolve or reject object of promise with a certain value in it  based on condition fulfillment.</p><p>‍<br/>Later we called the <em>canDriveCar </em>function with two user objects named user1 and user2 which have name and age property inside it. <em>canDriveCar </em>function returns a promise object so we can not read the promise value directly, to read promise value we have to use either chain .then() function or <em>async/await </em>keyword.</p><p>‍<br/>So in above example we have use .then(), as we know the promise can have 3 states<em>; pending, fulfilled, rejected. </em>It then handles the fulfilled state of promise while .catch() handles the rejected state of promise. We have covered these two methods in the above example and you can see the output for the same.</p><p>‍<br/>The finally() method of a Promise object schedules a function to be called when the promise is settled (either fulfilled or rejected). It immediately returns an equivalent Promise object, allowing you to chain calls to other promise methods.</p><h3>‍<strong>Example with finally(): </strong></h3><figure style="max-width:1120pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image"><div><img alt="" src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a02e02c2212c3a544d7e633_649be76ad2cc2f422968f93c_ErkPoKe-a8ph24TrLeQkx_1FNCYukF5kKMadsBsEzgMT5idCdiWHQ7b1gfcVjtO4lLbOPv2_tBqDYcfnYx1Z4qldQS0P-8u16qwYRJVssXhJ5Qjqz9TwuTWczplzg-V33R4OO1_1mGwJWBPQk3pify0.avif" loading="lazy"/></div></figure><h3><strong>Sequencing Function Calls In JS</strong></h3><figure style="max-width:1120pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image"><div><img alt="" src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a02e02c2212c3a544d7e640_649be76a976f3a3f9537ca15_D9Z4Xu5W1zB0wqpH0r_Yf54nKg4EkZ7GeNJY2NHxEK59i81zVM-oGBMI-Qo-_egUr1aPYgaWsjqFuqUaJlYxfGYqzICHEnjKTnUWl4Z5nszVbZzJtc7uTJEEO3ZWDUW3iq9_817pG7sFjbE7U4TGdHc.avif" loading="lazy"/></div></figure><p><strong>In the above example we have nested/chained multiple promises to run the code in sequence.</strong> <br/>The thing is, chaining promises together just like callbacks can get pretty bulky and confusing. That&#x27;s why async and await was brought about<br/>Creating an async function:</p><p>‍</p><figure style="max-width:1126pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image"><div><img alt="" src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a02e02c2212c3a544d7e643_649be76a05236839765e2802_hHxPUhgDdwUp0ttmCGrppVGKipFbpxpOgF2-haocjScUighrZIvdo1Tcr3Nq4Yk5Zxg35KaL_UCwu1Neqj-K-yhgD11TbipX_Lbo-CidqFtuLSoOhROjk_C5SFaboQ37MirG93SlezfnpaY7P9uyCsw.avif" loading="lazy"/></div></figure><h3><strong>Note: that calling an async function will always return a Promise. Take a look at this:</strong></h3><p>As you can see in the above example output,  we have created an Async function named fetchUserAsync and return the user object from that function. We have used the async keyword with the function signature which makes fetchUserAsync to return the promise.</p><p>‍<br/>We are calling the fetchUserAsync function inside the printResult method and storing the result of that function in the result variable, printing the result in the console. First console value is a promise and the second value is undefined.</p><p>‍<br/>To read the result of the fetchUserAsync function we have to use await keyword before it so that we can get the result of the promise.</p><h3>‍<strong>Here is the same example with await keyword:</strong></h3><p>‍</p><figure style="max-width:1126pxpx" class="w-richtext-align-fullwidth w-richtext-figure-type-image"><div><img alt="" src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a02e02b2212c3a544d7e620_649be76af933e87307bb7939_wc4XlO2cF4GB6CxA7hPeZUnOTE2Ex03Y1jVdz8x3cvTpcFgHdII6wzms7kBlUZ6qjVNua3jR-DAQ8F7USf-P6E42fwfuTcZ7PB4fuDpG-Jv4VnDCDe9Nd-gP9v3q57whu80-uUrLjgA253tZS5THdh8.avif" loading="lazy"/></div></figure><p>As you can see in the above example, we have marked the printResult function as async so that i can use await keyword inside the function, now the output value is user object, and we can access the property of user object resolved by the promise result. </p></div><div class="blog_rt w-dyn-bind-empty w-richtext"></div></div></div></div></section><section class="section"><div class="padding-global padding-section-medium"><div class="container-large"><div class="title"><h2 class="heading-style-h4">Explore Related Topic</h2></div><div class="content-wrapper"><div id="w-node-_21cffc3b-3119-2adc-ddd7-fe35ee047ae5-e8ff7b4e" class="w-dyn-list"><div role="list" class="blogs_cards_wp w-dyn-items"><div id="w-node-_21cffc3b-3119-2adc-ddd7-fe35ee047ae7-e8ff7b4e" role="listitem" class="w-dyn-item"><a href="tracing-go-routine-blocking-issues-with-pprof-execution-profiles.html" class="res_blog_card w-inline-block"><div class="res_blog-image_wp"><img src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a294b8ce2c363d9d561b_tracing-go-routine-blocking-issues-with-pprof-execution-profiles.avif" loading="lazy" alt="" sizes="100vw" srcset="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a294b8ce2c363d9d561b_tracing-go-routine-blocking-issues-with-pprof-execution-profiles-p-500.avif 500w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a294b8ce2c363d9d561b_tracing-go-routine-blocking-issues-with-pprof-execution-profiles-p-800.avif 800w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a294b8ce2c363d9d561b_tracing-go-routine-blocking-issues-with-pprof-execution-profiles-p-1080.avif 1080w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a294b8ce2c363d9d561b_tracing-go-routine-blocking-issues-with-pprof-execution-profiles.avif 1536w" class="image-100"/></div><div class="res_blog_content-wp feature"><div class="res_card_heading_wp"><h3 class="sub-heading card-heading truncate-3">Tracing Go Routine Blocking Issues with pprof Execution Profiles</h3><div class="card_bottom_wp"><p class="caption text-weight-normal">February 27, 2024</p><div class="dot-wp"></div><div class="read_time_wp"><p class="read-time w-dyn-bind-empty"></p><p class="caption">min</p></div></div></div><div class="blog_res_card_arrow_wp"><img src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02d5e8287e9692b998cd2e_res%20card%20arrow.svg" loading="lazy" alt="" class="blog-card_arrow"/></div></div></a></div><div id="w-node-_21cffc3b-3119-2adc-ddd7-fe35ee047ae7-e8ff7b4e" role="listitem" class="w-dyn-item"><a href="the-rise-of-webassembly-how-its-changing-web-development.html" class="res_blog_card w-inline-block"><div class="res_blog-image_wp"><img src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a2b2718a97a9d219a906_the-rise-of-webassembly-how-its-changing-web-development.avif" loading="lazy" alt="" sizes="100vw" srcset="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a2b2718a97a9d219a906_the-rise-of-webassembly-how-its-changing-web-development-p-500.avif 500w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a2b2718a97a9d219a906_the-rise-of-webassembly-how-its-changing-web-development-p-800.avif 800w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a2b2718a97a9d219a906_the-rise-of-webassembly-how-its-changing-web-development-p-1080.avif 1080w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61a2b2718a97a9d219a906_the-rise-of-webassembly-how-its-changing-web-development.avif 1536w" class="image-100"/></div><div class="res_blog_content-wp feature"><div class="res_card_heading_wp"><h3 class="sub-heading card-heading truncate-3">The Rise of WebAssembly: How It&#x27;s Changing Web Development</h3><div class="card_bottom_wp"><p class="caption text-weight-normal">September 18, 2023</p><div class="dot-wp"></div><div class="read_time_wp"><p class="read-time">5</p><p class="caption">min</p></div></div></div><div class="blog_res_card_arrow_wp"><img src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02d5e8287e9692b998cd2e_res%20card%20arrow.svg" loading="lazy" alt="" class="blog-card_arrow"/></div></div></a></div><div id="w-node-_21cffc3b-3119-2adc-ddd7-fe35ee047ae7-e8ff7b4e" role="listitem" class="w-dyn-item"><a href="how-to-operate-ocr-engines.html" class="res_blog_card w-inline-block"><div class="res_blog-image_wp"><img src="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61aac46f5d6ab22ff4abcd_how-to-operate-ocr-engines.avif" loading="lazy" alt="" sizes="100vw" srcset="https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61aac46f5d6ab22ff4abcd_how-to-operate-ocr-engines-p-500.avif 500w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61aac46f5d6ab22ff4abcd_how-to-operate-ocr-engines-p-800.avif 800w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61aac46f5d6ab22ff4abcd_how-to-operate-ocr-engines-p-1080.avif 1080w, https://cdn.prod.website-files.com/69e88b8225ca7c9122b1ae4c/6a61aac46f5d6ab22ff4abcd_how-to-operate-ocr-engines.avif 1536w" class="image-100"/></div><div class="res_blog_content-wp feature"><div class="res_card_heading_wp"><h3 class="sub-heading card-heading truncate-3">How to operate OCR engines</h3><div class="card_bottom_wp"><p class="caption text-weight-normal">June 20, 2023</p><div class="dot-wp"></div><div class="read_time_wp"><p class="read-time w-dyn-bind-empty"></p><p class="caption">min</p></div></div></div><div class="blog_res_card_arrow_wp"><img src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02d5e8287e9692b998cd2e_res%20card%20arrow.svg" loading="lazy" alt="" class="blog-card_arrow"/></div></div></a></div></div></div></div></div></div><div class="background-wrapper"><img sizes="100vw" srcset="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02f7c98d75c5b4e0e4dc0f_contact_us%20form%20bg-p-500.webp 500w, https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02f7c98d75c5b4e0e4dc0f_contact_us%20form%20bg-p-800.webp 800w, https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02f7c98d75c5b4e0e4dc0f_contact_us%20form%20bg-p-1080.webp 1080w, https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02f7c98d75c5b4e0e4dc0f_contact_us%20form%20bg-p-1600.webp 1600w, https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02f7c98d75c5b4e0e4dc0f_contact_us%20form%20bg-p-2000.webp 2000w, https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02f7c98d75c5b4e0e4dc0f_contact_us%20form%20bg.webp 2160w" alt="" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a02f7c98d75c5b4e0e4dc0f_contact_us%20form%20bg.webp" loading="lazy" class="image-100"/></div></section><div aria-label="" data-wf--footer--variant="no-button" class="footer_wrapper div-block-166"><div class="footer_top_border"></div><section class="section footer"><div class="padding-global padding-section-medium no-bottom-padding"><div class="container-large"><div class="title-wrapper text-align-center max-width-large align-center"><div class="tag_main_block"><h2 class="heading-style-h1">No Hype. Just Systems That Deliver  Real Outcomes at Scale.</h2></div></div><div class="space-32"></div><div class="button-wrapper"><div class="footer_button_wrapper w-variant-f74b179e-55b8-2db1-38b0-c152d05e6b0f"><a data-wf--button--variant="primary" href="../contact.html" class="button w-inline-block"><div>Discuss your use case</div></a></div></div></div></div><div class="footer_logo_wrapper"><img src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a4a5823b221c183c39d0267_a42dba669105448204808de49d5c8a0d_coditation%20logo.svg" loading="lazy" alt="coditation logo" class="image-100"/><div class="footer_logo_blur"><img src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a4ce7ceb0faf3f518e87e70_Header%20blur.svg" loading="lazy" alt="" class="image-100"/></div></div><div class="padding-global"><div class="container-large"><div class="w-layout-grid footer1-top-wrapper"><div class="footer_left_erapper"><div class="footer_logo"><a href="../index.html" aria-label="Coditation - Home" class="nav_footer_logo w-inline-block"><img loading="eager" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a423d399fca0dfe791e3798_1cb00d82bded72524a40d35b7f5940e1_coditation%20logo%20white.svg" alt="coditation logo 
+" class="image-100"/></a></div><div class="paragraph_wrapper"><p class="paragraph-2 text-weight-medium">A1004, Amar Business Zone, Baner, Pune, Maharashtra – 411045</p></div><div class="certificate-wrapper"><img loading="eager" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a4a5157eecbadd1d6f7c7aa_4081d298bbc138239e8ca12fc42b19fa_iso-27001.avif" alt="iso-27001 certificate" class="cerificate_logo"/><img width="Auto" loading="eager" alt="CMSA Logo" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/6a58da96bba0aeea1c5858c7_e5020952051a9c3c4ddd14673c7b5378_CMSA.avif" class="cerificate_logo"/></div></div><div class="w-layout-grid footer-menu-wp"><div class="footer-list-wp"><div class="footer-heading-wp"><h3 class="heading-style-h5">Industries</h3></div><a aria-label="Healthcare &amp; Lifescience" href="../industries/healthcare-life-sciences.html" class="footer-link">Healthcare &amp; Lifescience</a><a aria-label="Logistics" href="../industries/logistics.html" class="footer-link">Logistics</a><a aria-label="Hi-TecH " href="../industries/hi-tech.html" class="footer-link">Hi-TecH </a><a aria-label="Digital Commerce" href="../industries/digital-commerce.html" class="footer-link">Digital Commerce</a><a aria-label="Energy &amp; Industrials" href="../industries/energy-and-industrials.html" class="footer-link">Energy &amp; Industrials</a><a aria-label="Fintech" href="../industries/fintech.html" class="footer-link">Fintech</a></div><div class="footer-list-wp"><div class="footer-heading-wp"><h3 class="heading-style-h5">Capabilities</h3></div><a aria-label="AI and Machine Learning" href="../capability/ai-machine-learning.html" class="footer-link">AI &amp; Machine Learning</a><a aria-label="Data Engineering" href="../capability/data-engineering.html" class="footer-link">Data Engineering</a><a aria-label="Managed DevOps" href="../capability/managed-devops-sre-application-support.html" class="footer-link">Managed DevOps, SRE &amp; Application Support</a><a aria-label="App Maintenance &amp; Modernization " href="../capability/application-maintenance-modernization.html" class="footer-link">App Maintenance &amp; Modernization</a></div><div class="footer-list-wp"><div class="footer-heading-wp"><h3 class="heading-style-h5">Explore</h3></div><a aria-label="AI Lab" href="../ai-lab.html" class="footer-link">AI Lab</a><a aria-label="Case Studies" href="../case-studies.html" class="footer-link">Case Studies</a><a aria-label="Blogs" href="../resources/blogs.html" class="footer-link">Blogs</a><a aria-label="Blogs" href="../gen-ai-playbook.html" class="footer-link">Gen AI Playbook</a></div><div class="footer-list-wp"><div class="footer-heading-wp"><h3 class="heading-style-h5">Company</h3></div><a aria-label="About Coditaton" href="../about.html" class="footer-link">About</a><a aria-label="Career in Coditation" href="../careers.html" class="footer-link">Careers</a><a aria-label="Career in Coditation" href="../contact.html" class="footer-link">Contact Us</a></div></div></div></div><div class="container-large"><div class="footer_bottom_layout"><div data-trigger="group" role="list" class="footer_bottom_list"><div data-trigger="hover-other focus-other" role="listitem" class="footer_bottom_item"><a aria-label="Privacy Policy" href="../privacy-policy.html" class="f-link w-inline-block"><div>Privacy Policy</div></a></div><div class="div-block-162"></div><div data-trigger="hover-other focus-other" role="listitem" class="footer_bottom_item"><a aria-label="Terms and Conditions" href="../terms-conditions.html" class="f-link w-inline-block"><div>Terms &amp; Conditions</div></a></div></div><div class="social_links_wrapper"><a aria-label="Visit Linkedin" href="https://linkedin.com/company/coditation-systems" target="_blank" class="w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/69f21017ce30b9fcf9fb6f9b_Social%20Icons.svg" alt="linkdin logo"/></a><a aria-label="Visit Twitter" href="https://twitter.com/coditation" target="_blank" class="w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/69f2101730b7c101862459ac_Social%20Icons-2.svg" alt="Tweeter logo"/></a><a aria-label="Visit Instagram" href="https://www.instagram.com/coditation_systems/" target="_blank" class="w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/69f21017e136bf0527292e9e_Social%20Icons-4.svg" alt="Instagram logo"/></a><a aria-label="Visit Youtube" href="https://www.youtube.com/@Coditation" target="_blank" class="w-inline-block"><img loading="lazy" src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/69f21071df2d312d6ddc6a1d_Social%20Icons.svg" alt="youtube logo"/></a></div></div></div></div><div class="footer-glow"><div class="footer-blur-1"></div><div class="footer-blur-2"></div><div class="footer-blur-3"></div></div></section></div></div></div><script src="https://d3e54v103j8qbb.cloudfront.net/js/jquery-3.5.1.min.dc5e7f18c8.js?site=69e5ad295c1d96ac846056f7" type="text/javascript" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script><script src="https://cdn.prod.website-files.com/69e5ad295c1d96ac846056f7/js/webflow.16367cd7.479d1c7e7bbbd3aa.js" type="text/javascript" integrity="sha384-55FptlmWQGTMrYX+GTfY48QCEMR/Jzh7iQWZhQ6ScjlzmW5pXvrb2QuZq9aIMIy4" crossorigin="anonymous"></script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5882L9N"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<script>
+  // Wait for all critical resources to fully load
+  window.addEventListener('load', () => {
+    // Yield the main thread so the browser can paint the screen smoothly
+    setTimeout(() => {
+      if (typeof THREE === 'undefined') return;
+
+      /* =========================================================================
+         GLOBAL SETUP, MEMORY CACHING & UTILS
+         ========================================================================= */
+      const sceneUpdates = [];
+      const resizeHandlers = [];
+
+      // Global Debounced Resize Listener
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          resizeHandlers.forEach((handler) => handler());
+          // Refresh ScrollTrigger when layout changes on resize
+          if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+        }, 150);
+      });
+
+      // Texture 1: 100% Opacity Solid Dots
+      const canvas1 = document.createElement('canvas');
+      canvas1.width = 64;
+      canvas1.height = 64;
+      const ctx1 = canvas1.getContext('2d');
+      const grad1 = ctx1.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grad1.addColorStop(0, 'rgba(255,255,255,1)');
+      grad1.addColorStop(0.5, 'rgba(255,255,255,1)');
+      grad1.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx1.fillStyle = grad1;
+      ctx1.fillRect(0, 0, 64, 64);
+      const solidDotTex = new THREE.CanvasTexture(canvas1);
+
+      // Texture 2: 80% Opacity Soft Glow
+      const canvas2 = document.createElement('canvas');
+      canvas2.width = 64;
+      canvas2.height = 64;
+      const ctx2 = canvas2.getContext('2d');
+      const grad2 = ctx2.createRadialGradient(32, 32, 0, 32, 32, 32);
+      grad2.addColorStop(0, 'rgba(255,255,255,1)');
+      grad2.addColorStop(0.4, 'rgba(255,255,255,0.8)');
+      grad2.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx2.fillStyle = grad2;
+      ctx2.fillRect(0, 0, 64, 64);
+      const softBeamTex = new THREE.CanvasTexture(canvas2);
+
+      // Shared Materials
+      const starSharedMaterial = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.15,
+        opacity: 0.4,
+        transparent: true,
+      });
+
+      /* =========================================================================
+         INTERSECTION OBSERVER SETUP
+         ========================================================================= */
+      const viewportObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            entry.target.isIntersecting = entry.isIntersecting;
+          });
+        },
+        { rootMargin: '150px' },
+      );
+
+      /* =========================================================================
+         SCRIPT 1: PERSPECTIVE STAR FIELD BACKGROUNDS
+         ========================================================================= */
+      const createParticleBG = (settings) => {
+        const container = document.getElementById(settings.id);
+        if (!container) return;
+
+        container.isIntersecting = false;
+        let w = container.offsetWidth;
+        let h = container.offsetHeight;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(settings.fov, w / h, 0.1, 1000);
+        camera.position.set(0, 12, 20);
+        camera.rotation.x = -0.6;
+
+        const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(w, h);
+        container.appendChild(renderer.domElement);
+
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(settings.count * 3);
+
+        for (let i = 0; i < settings.count; i++) {
+          positions[i * 3] = (Math.random() - 0.5) * 200;
+          positions[i * 3 + 1] = Math.random() * 2;
+          positions[i * 3 + 2] = -Math.random() * 200;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const particles = new THREE.Points(geometry, starSharedMaterial);
+        scene.add(particles);
+
+        const pos = particles.geometry.attributes.position.array;
+
+        sceneUpdates.push(() => {
+          if (!container.isIntersecting) return;
+          for (let i = 0; i < pos.length; i += 3) {
+            pos[i + 2] += settings.speed;
+            if (pos[i + 2] > 20) pos[i + 2] = settings.resetZ;
+          }
+          particles.geometry.attributes.position.needsUpdate = true;
+          renderer.render(scene, camera);
+        });
+
+        resizeHandlers.push(() => {
+          w = container.offsetWidth;
+          h = container.offsetHeight;
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+          renderer.setSize(w, h);
+        });
+
+        viewportObserver.observe(container);
+      };
+
+      /* =========================================================================
+         SCRIPT 2: FALLING SVG DOT POOL (100% Opacity)
+         ========================================================================= */
+      const rawLayerData = [0xd9d9d9, 0xd9d9d9, 0xd9d9d9, 0xd9d9d9, 0xd9d9d9, 0x8099eb, 0xd9d9d9, 0xd9d9d9, 0xd9d9d9, 0x90a4e8, 0x90a4e8, 0xd9d9d9, 0xd9d9d9, 0xd9d9d9, 0x80d6eb, 0x8099eb, 0xd9d9d9, 0xd9d9d9, 0x80d6eb, 0x90a4e8, 0x90a4e8, 0xd9d9d9, 0x8099eb, 0xd9d9d9, 0xd9d9d9, 0xd9d9d9, 0xd9d9d9];
+      const cachedLayerColors = rawLayerData.map((hex) => new THREE.Color(hex));
+
+      const initParticles = (containerId) => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.isIntersecting = false;
+        let w = container.offsetWidth;
+        let h = container.offsetHeight;
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 500);
+        camera.position.set(0, 0, 30);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(w, h);
+        renderer.domElement.style.position = 'absolute';
+        renderer.domElement.style.top = '0';
+        renderer.domElement.style.left = '0';
+        container.appendChild(renderer.domElement);
+
+        const COUNT = 250,
+          SPREAD_X = 35,
+          SPREAD_Z = 60,
+          SPEED = 0.04,
+          BOTTOM = -20,
+          TOP = 20,
+          SIZE_MIN = 5,
+          SIZE_MAX = 15;
+
+        const positions = new Float32Array(COUNT * 3);
+        const colors = new Float32Array(COUNT * 3);
+        const sizes = new Float32Array(COUNT);
+
+        for (let i = 0; i < COUNT; i++) {
+          const idx = Math.floor(Math.random() * cachedLayerColors.length);
+          positions[i * 3] = (Math.random() - 0.5) * SPREAD_X;
+          positions[i * 3 + 1] = Math.random() * (TOP - BOTTOM) + BOTTOM;
+          positions[i * 3 + 2] = (Math.random() - 0.5) * SPREAD_Z;
+
+          const c = cachedLayerColors[idx];
+          colors[i * 3] = c.r;
+          colors[i * 3 + 1] = c.g;
+          colors[i * 3 + 2] = c.b;
+          sizes[i] = SIZE_MIN + Math.random() * (SIZE_MAX - SIZE_MIN);
+        }
+
+        const geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+        const mat = new THREE.ShaderMaterial({
+          uniforms: { map: { value: solidDotTex } },
+          vertexShader: `attribute float size; attribute vec3 color; varying vec3 vColor; void main() { vColor = color; gl_PointSize = size; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+          fragmentShader: `uniform sampler2D map; varying vec3 vColor; void main() { vec4 tex = texture2D(map, gl_PointCoord); if (tex.a < 0.05) discard; gl_FragColor = vec4(vColor, 1) * tex; }`,
+          transparent: true,
+          depthWrite: false,
+        });
+
+        scene.add(new THREE.Points(geo, mat));
+
+        sceneUpdates.push(() => {
+          if (!container.isIntersecting) return;
+          const pos = geo.attributes.position.array;
+          const col = geo.attributes.color.array;
+          let colorChanged = false;
+
+          for (let i = 0; i < COUNT; i++) {
+            pos[i * 3 + 1] += SPEED;
+            if (pos[i * 3 + 1] > TOP) {
+              pos[i * 3] = (Math.random() - 0.5) * SPREAD_X;
+              pos[i * 3 + 1] = BOTTOM;
+              pos[i * 3 + 2] = (Math.random() - 0.5) * SPREAD_Z;
+
+              const idx = Math.floor(Math.random() * cachedLayerColors.length);
+              const c = cachedLayerColors[idx];
+              col[i * 3] = c.r;
+              col[i * 3 + 1] = c.g;
+              col[i * 3 + 2] = c.b;
+              colorChanged = true;
+            }
+          }
+          geo.attributes.position.needsUpdate = true;
+          if (colorChanged) geo.attributes.color.needsUpdate = true;
+          renderer.render(scene, camera);
+        });
+
+        resizeHandlers.push(() => {
+          w = container.offsetWidth;
+          h = container.offsetHeight;
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+          renderer.setSize(w, h);
+        });
+
+        viewportObserver.observe(container);
+      };
+
+      /* =========================================================================
+         SCRIPT 3: SVG EXTRACTED VECTOR BEAM PARTICLES (Soft Glow)
+         ========================================================================= */
+      const cachedBeamColors = [new THREE.Color(0xffffff), new THREE.Color(0x8fb8fc), new THREE.Color(0x5e94fa), new THREE.Color(0x4e9cdb)];
+
+      const initBeamParticles = (containerId) => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.isIntersecting = false;
+        const SVG_W = 524, SVG_H = 213;
+        const beams = [
+          { x1: 328.087, y1: 24.577, x2: 3.9, y2: 140.983 },
+          { x1: 431.731, y1: 2.678, x2: 18.224, y2: 150.659 },
+          { x1: 467.268, y1: 5.045, x2: 49.84, y2: 159.474 },
+          { x1: 499.381, y1: 16.694, x2: 95.744, y2: 177.019 },
+          { x1: 507.447, y1: 24.034, x2: 78.124, y2: 193.701 },
+          { x1: 518.702, y1: 41.078, x2: 167.659, y2: 181.762 },
+          { x1: 452.627, y1: 64.335, x2: 96.676, y2: 206.722 },
+          { x1: 424.975, y1: 24.079, x2: 69.024, y2: 166.466 },
+          { x1: 488.977, y1: 13.54, x2: 95.5, y2: 169.118 },
+        ];
+
+        let W = container.offsetWidth;
+        let H = container.offsetHeight;
+        const scene = new THREE.Scene();
+        const camera = new THREE.OrthographicCamera(0, W, 0, H, -1, 1);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true, powerPreference: 'high-performance' });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(W, H);
+        renderer.domElement.style.position = 'absolute';
+        renderer.domElement.style.top = '0';
+        renderer.domElement.style.left = '0';
+        container.appendChild(renderer.domElement);
+
+        const svgToCanvas = (sx, sy) => ({ x: (sx / SVG_W) * W, y: (sy / SVG_H) * H });
+
+        const COUNT = 18, SPEED = 0.4, SIZE_MIN = 2.5, SIZE_MAX = 13;
+        const totalCount = COUNT * beams.length;
+        const positions = new Float32Array(totalCount * 3), colors = new Float32Array(totalCount * 3);
+        const alphas = new Float32Array(totalCount), sizes = new Float32Array(totalCount);
+        const state = [];
+
+        const resetParticle = (beamIdx, particleIdx, randomProgress) => {
+          const b = beams[beamIdx];
+          const p1 = svgToCanvas(b.x1, b.y1);
+          const p2 = svgToCanvas(b.x2, b.y2);
+          const dx = p2.x - p1.x, dy = p2.y - p1.y;
+          const len = Math.sqrt(dx * dx + dy * dy);
+          const nx = dx / len, ny = dy / len;
+          const scatter = (Math.random() - 0.5) * 3;
+          const t = randomProgress !== undefined ? randomProgress : Math.random();
+
+          return {
+            beamIdx,
+            x: p1.x + dx * t + -ny * scatter,
+            y: p1.y + dy * t + nx * scatter,
+            vx: nx * SPEED * (0.7 + Math.random() * 0.6),
+            vy: ny * SPEED * (0.7 + Math.random() * 0.6),
+            originX: p1.x,
+            originY: p1.y,
+            len,
+            t,
+            size: SIZE_MIN + Math.random() * (SIZE_MAX - SIZE_MIN),
+          };
+        };
+
+        for (let b = 0; b < beams.length; b++) {
+          for (let p = 0; p < COUNT; p++) {
+            state.push(resetParticle(b, p, Math.random()));
+          }
+        }
+
+        const geo = new THREE.BufferGeometry();
+        geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+        geo.setAttribute('alpha', new THREE.BufferAttribute(alphas, 1));
+        geo.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+        const mat = new THREE.ShaderMaterial({
+          uniforms: { map: { value: softBeamTex } },
+          vertexShader: `attribute float size; attribute vec3 color; attribute float alpha; varying vec3 vColor; varying float vAlpha; void main() { vColor = color; vAlpha = alpha; gl_PointSize = size; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+          fragmentShader: `uniform sampler2D map; varying vec3 vColor; varying float vAlpha; void main() { vec4 tex = texture2D(map, gl_PointCoord); if (tex.a < 0.04) discard; gl_FragColor = vec4(vColor, vAlpha) * tex; }`,
+          transparent: true,
+          depthWrite: false,
+        });
+
+        scene.add(new THREE.Points(geo, mat));
+
+        sceneUpdates.push(() => {
+          if (!container.isIntersecting) return;
+          for (let i = 0; i < state.length; i++) {
+            let s = state[i];
+            s.x += s.vx;
+            s.y += s.vy;
+            s.t = Math.sqrt((s.x - s.originX) * (s.x - s.originX) + (s.y - s.originY) * (s.y - s.originY)) / s.len;
+
+            if (s.t >= 1.0 || s.x < -10 || s.y > H + 10) {
+              state[i] = resetParticle(s.beamIdx, i, 0.0);
+              s = state[i];
+            }
+
+            positions[i * 3] = s.x;
+            positions[i * 3 + 1] = s.y;
+            positions[i * 3 + 2] = 0;
+
+            const t = Math.min(1, Math.max(0, s.t));
+            const colIdx = t < 0.09 ? 3 : t < 0.3 ? 2 : t < 0.75 ? 1 : 0;
+            const c = cachedBeamColors[colIdx];
+            colors[i * 3] = c.r;
+            colors[i * 3 + 1] = c.g;
+            colors[i * 3 + 2] = c.b;
+
+            alphas[i] = Math.min(1.0, t / 0.08) * Math.min(1.0, (1.0 - t) / 0.15) * 0.92;
+            sizes[i] = s.size * (0.4 + t * 0.6);
+          }
+
+          geo.attributes.position.needsUpdate = true;
+          geo.attributes.color.needsUpdate = true;
+          geo.attributes.alpha.needsUpdate = true;
+          geo.attributes.size.needsUpdate = true;
+          renderer.render(scene, camera);
+        });
+
+        resizeHandlers.push(() => {
+          W = container.offsetWidth;
+          H = container.offsetHeight;
+          camera.right = W;
+          camera.bottom = H;
+          camera.updateProjectionMatrix();
+          renderer.setSize(W, H);
+          for (let i = 0; i < state.length; i++) state[i] = resetParticle(state[i].beamIdx, i, Math.random());
+        });
+
+        viewportObserver.observe(container);
+      };
+
+      /* =========================================================================
+         EXECUTION TRIGGERS
+         ========================================================================= */
+      createParticleBG({ id: 'three-bg', fov: 70, count: 1000, speed: 0.012, resetZ: -200 });
+      createParticleBG({ id: 'three-bg-2', fov: 60, count: 1200, speed: 0.012, resetZ: -100 });
+      createParticleBG({ id: 'three-bg-3', fov: 50, count: 3500, speed: 0.012, resetZ: -100 });
+
+      initParticles('svg-particle-bg-1');
+      initParticles('svg-particle-bg-2');
+
+      initBeamParticles('svg-particle-bg-right');
+      initBeamParticles('svg-particle-bg-left');
+
+      const masterAnimationEngine = () => {
+        requestAnimationFrame(masterAnimationEngine);
+        sceneUpdates.forEach((update) => update());
+      };
+
+      if (sceneUpdates.length > 0) {
+        masterAnimationEngine();
+      }
+
+      // CRITICAL FORCED-REFLOW FIX: Tell ScrollTrigger that the layouts have altered due to injected 3D elements
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.refresh();
+      }
+      
+    }, 500); 
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const copyLinks = document.querySelectorAll(".copy-url");
+
+    copyLinks.forEach(link => {
+      link.addEventListener("click", function (e) {
+        e.preventDefault(); // Prevent default link behavior
+
+        const url = window.location.href;
+
+        // Copy to clipboard
+        navigator.clipboard.writeText(url)
+          .then(() => {
+            console.log("URL copied to clipboard:", url);
+            // Optionally show feedback
+            alert("URL copied!");
+          })
+          .catch(err => {
+            console.error("Failed to copy URL:", err);
+          });
+      });
+    });
+  });
+</script>
+</body></html>
